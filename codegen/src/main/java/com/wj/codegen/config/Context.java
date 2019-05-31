@@ -1,5 +1,6 @@
 package com.wj.codegen.config;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class Context extends PropertyHolder {
 			Set<String> fullyQualifiedTableNames) {
 		introspectedTables = new ArrayList<IntrospectedTable>();
 		JavaTypeResolver javaTypeResolver = ObjectFactory.createJavaTypeResolver(this, warnings);
+		
+		Connection connection = null;
 	}
 	
 	public void generateFiles(ProgressCallBack callback, List<GeneratedJavaFile> generatedJavaFiles,
