@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.wj.codegen.util.StringUtil;
 
+/**
+ * 代码生成器实现的基类
+ * @author Administrator
+ *
+ */
 public abstract class IntrospectedTable {
 	
 	protected enum InternalAttribute{
