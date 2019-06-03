@@ -10,6 +10,10 @@ public class StringUtil {
 		return "true".equalsIgnoreCase(s);
 	}
 	
+	public static boolean stringContainsSpace(String s) {
+		return s != null && s.indexOf(' ') != -1;
+	}
+	
 	public static String composeFullyQualifiedTableName(String catalog,
 			String schema,String tableName,char separator) {
 		StringBuilder sb = new StringBuilder();

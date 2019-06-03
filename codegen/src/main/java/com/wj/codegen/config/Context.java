@@ -36,6 +36,8 @@ public class Context extends PropertyHolder {
 	
 	private List<IntrospectedTable> introspectedTables;
 	
+	private String introspectedColumnImpl;
+	
 	public Context(ModelType defaultModelType) {
 		if(defaultModelType == null) {
 			this.defaultModelType = ModelType.HIERARCHICAL;
@@ -141,6 +143,14 @@ public class Context extends PropertyHolder {
 
 	public void setConnectionFactoryConfigration(ConnectionFactoryConfiguration connectionFactoryConfigration) {
 		this.connectionFactoryConfigration = connectionFactoryConfigration;
+	}
+
+	public String getIntrospectedColumnImpl() {
+		return introspectedColumnImpl;
+	}
+
+	public void setIntrospectedColumnImpl(String introspectedColumnImpl) {
+		this.introspectedColumnImpl = introspectedColumnImpl;
 	}
 	
 	

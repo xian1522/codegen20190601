@@ -6,6 +6,11 @@ public class TableConfiguration extends PropertyHolder {
 	private String schema;
 	private String tableName;
 	
+	/** 分隔标识符 */
+	private boolean delimitIdentifiers;
+	
+	private boolean wildcardEscapingEnabled;
+	
 	public boolean areAnyStatementsEnabled() {
 		return true;
 	}
@@ -27,6 +32,22 @@ public class TableConfiguration extends PropertyHolder {
 	}
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	public boolean isDelimitIdentifiers() {
+		return delimitIdentifiers;
+	}
+
+	public void setDelimitIdentifiers(boolean delimitIdentifiers) {
+		this.delimitIdentifiers = delimitIdentifiers;
+	}
+
+	public boolean isWildcardEscapingEnabled() {
+		return wildcardEscapingEnabled;
+	}
+
+	public void setWildcardEscapingEnabled(boolean wildcardEscapingEnabled) {
+		this.wildcardEscapingEnabled = wildcardEscapingEnabled;
 	}
 	
 	

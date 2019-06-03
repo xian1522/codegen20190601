@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wj.codegen.api.ConnectionFactory;
+import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.config.ConnectionFactoryConfiguration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.JavaTypeResolverConfiguration;
+import com.wj.codegen.util.StringUtil;
 
 public class ObjectFactory {
 	
@@ -102,6 +104,18 @@ public class ObjectFactory {
 		if((config != null)) {
 			answer.addConfigurationProperties(config.getProperties());
 		}
+		return answer;
+	}
+	
+	public static IntrospectedColumn createIntrospectedColumn(Context context) {
+		String type = context.getIntrospectedColumnImpl();
+		if(!StringUtil.stringHasValue(type)) {
+			type = IntrospectedColumn.class.getName();
+		}
+		
+		IntrospectedColumn answer = (IntrospectedColumn)createInternalObject(type);
+		answer.setContext(context);
+		
 		return answer;
 	}
 }
