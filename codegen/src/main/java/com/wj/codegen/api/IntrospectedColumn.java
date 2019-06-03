@@ -27,6 +27,13 @@ public class IntrospectedColumn {
 	protected String remarks;
 	
 	protected String defalultValue;
+	
+	protected String tableAilas;
+	
+	protected boolean isAutoIncrement;
+	protected boolean isGeneratedColumn;
+	
+	protected boolean isColumnNameDelimited;
 
 	public String getActualColumnName() {
 		return actualColumnName;
@@ -122,6 +129,38 @@ public class IntrospectedColumn {
 
 	public void setDefalultValue(String defalultValue) {
 		this.defalultValue = defalultValue;
+	}
+
+	public String getTableAilas() {
+		return tableAilas;
+	}
+
+	public void setTableAilas(String tableAilas) {
+		this.tableAilas = tableAilas;
+	}
+
+	public boolean isAutoIncrement() {
+		return isAutoIncrement;
+	}
+
+	public void setAutoIncrement(boolean isAutoIncrement) {
+		this.isAutoIncrement = isAutoIncrement;
+	}
+
+	public boolean isGeneratedColumn() {
+		return isGeneratedColumn;
+	}
+
+	public void setGeneratedColumn(boolean isGeneratedColumn) {
+		this.isGeneratedColumn = isGeneratedColumn;
+	}
+
+	public boolean isColumnNameDelimited() {
+		return isColumnNameDelimited;
+	}
+
+	public void setColumnNameDelimited(boolean isColumnNameDelimited) {
+		this.isColumnNameDelimited = isColumnNameDelimited;
 	}
 	
 	

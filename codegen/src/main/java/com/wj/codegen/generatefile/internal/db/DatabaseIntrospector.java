@@ -4,6 +4,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.StringTokenizer;
 import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.config.Context;
+import com.wj.codegen.config.GeneratedKey;
 import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
@@ -39,8 +41,24 @@ public class DatabaseIntrospector {
 		
 		Map<ActualTableName,List<IntrospectedColumn>> columns = getColumns(tc);
 		
-		return null;
+		if(columns.isEmpty()) {
+			warnings.add("columns is empty");
+			return null;
+		}
+		//去除不需要生成代码的表字段..
+		removeIgnoredColumns(tc,columns);
+		//额外表字段处理..
+		calculateExtraColumnInformation(tc,columns);
+		//表字段覆写..
+		applyColumnOverrides(tc,columns);
+		
+		calculateIdentityColumns(tc,columns);
+		
+		List<IntrospectedTable> introspectedTables = calculateIntrospectedTables(tc,columns);
+		
+		return introspectedTables;
 	}
+	
 	
 	private Map<ActualTableName,List<IntrospectedColumn>> getColumns(TableConfiguration tc)throws SQLException{
 		String localCatalog = null;
@@ -116,9 +134,107 @@ public class DatabaseIntrospector {
 		
 		while(rs.next()) {
 			IntrospectedColumn introspectedColumn = ObjectFactory.createIntrospectedColumn(context);
+			
+			introspectedColumn.setTableAilas(tc.getAlias());
+			introspectedColumn.setJdbcType(rs.getInt("DATA_TYPE"));
+			introspectedColumn.setLength(rs.getInt("COLUMN_SIZE"));
+			introspectedColumn.setActualColumnName(rs.getString("COLUMN_NAME"));
+			introspectedColumn.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
+			introspectedColumn.setScale(rs.getInt("DECIMAL_DIGITS"));
+			introspectedColumn.setRemarks(rs.getString("REMARKS"));
+			introspectedColumn.setDefalultValue(rs.getString("COLUMN_DEF"));
+			
+			if(supportsIsAutoIncrement) {
+				introspectedColumn.setAutoIncrement("YES".equals(rs.getString("IS_AUTOINCREMENT")));
+			}
+			if(supportsIsGeneratedColumn) {
+				introspectedColumn.setGeneratedColumn("YES".equals(rs.getString("IS_GENERATEDCOLUMN")));
+			}
+			
+			ActualTableName atn = new ActualTableName(rs.getString("TABLE_CAT"),rs.getString("TABLE_SCHEM"),
+					rs.getString("TABLE_NAME"));
+			
+			List<IntrospectedColumn> columns = answer.get(atn);
+			if(columns == null) {
+				columns = new ArrayList<IntrospectedColumn>();
+				answer.put(atn, columns);
+			}
+			columns.add(introspectedColumn);
+			
+		}
+		closeResultSet(rs);
+		
+		if(answer.size() > 1 
+				&& StringUtil.stringContainSQLWildcard(localSchema)
+				&& StringUtil.stringContainSQLWildcard(localTableName)) {
+			// 待处理警告
 		}
 		
 		return answer;
 	}
 	
+	private void closeResultSet(ResultSet rs) {
+		if(rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void removeIgnoredColumns(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>>columns) {
+		
+	}
+
+	private void calculateExtraColumnInformation(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>>columns) {
+		
+	}
+	
+	private void applyColumnOverrides(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>> columns) {
+		
+	}
+
+	private void calculateIdentityColumns(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>> columns) {
+		GeneratedKey gk = tc.getGeneratedKey();
+		if(gk == null) {
+			return;
+		}
+		for(Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
+			for(IntrospectedColumn column : entry.getValue()) {
+				if(isMatchdColumn(column, gk)) {
+					if(gk.isIdentity() || gk.isJdbcStandard()) {
+						column.setIdentity(true);
+						column.setSequnceColumn(false);
+					}else {
+						column.setIdentity(false);
+						column.setSequnceColumn(true);
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean isMatchdColumn(IntrospectedColumn column,GeneratedKey gk) {
+		if(column.isColumnNameDelimited()) {
+			return column.getActualColumnName().equals(gk.getColumn());
+		}else {
+			return column.getActualColumnName().equalsIgnoreCase(gk.getColumn());
+		}
+	}
+	
+	private List<IntrospectedTable> calculateIntrospectedTables(TableConfiguration tc,
+				Map<ActualTableName,List<IntrospectedColumn>>columns){
+		boolean delimitIdentifiers = tc.isDelimitIdentifiers()
+				||StringUtil.stringContainsSpace(tc.getCatalog())
+				||StringUtil.stringContainsSpace(tc.getSchema())
+				||StringUtil.stringContainsSpace(tc.getTableName());
+		
+		List<IntrospectedTable> answer = new ArrayList<IntrospectedTable>();
+		for(Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
+			ActualTableName atn = entry.getKey();
+		}
+		
+		return answer;
+	}
 }

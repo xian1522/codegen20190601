@@ -18,6 +18,39 @@ public class FullyQualifiedTable {
 	private String beginningDelimiter;
 	private String endingDelimiter;
 	
+	public FullyQualifiedTable(String introspectedCatalog,String introspectedSchema,
+			String introspectedTableName,String domainObjectName,String alias,
+			boolean ignoreQualifiersAtRuntime,String runtimeCatalog,
+			String runtimeSchema,String runtimeTableName,
+			boolean delimitIdentifiers,Context context) {
+		this.introspectedCatalog = introspectedCatalog;
+		this.introspectedSchema = introspectedSchema;
+		this.introspectedTableName = introspectedTableName;
+		this.ignoreQualifiersAtRuntime = ignoreQualifiersAtRuntime;
+		this.runtimeCatalog = runtimeCatalog;
+		this.runtimeSchema = runtimeSchema;
+		this.runtimeTableName =runtimeTableName;
+		
+		if(StringUtil.stringHasValue(domainObjectName)) {
+			int index = domainObjectName.lastIndexOf('.');
+			if(index == -1) {
+				this.domainObjectName = domainObjectName;
+			}else {
+				this.domainObjectName = domainObjectName.substring(index+1);
+				this.domainObjectSubPackage = domainObjectName.substring(0, index);
+			}
+		}
+		
+		if(alias == null) {
+			this.alias = null;
+		}else {
+			this.alias = alias.trim();
+		}
+		
+		beginningDelimiter = delimitIdentifiers ? context.getBeginningDelimiter() : "";
+		endingDelimiter = delimitIdentifiers ? context.getEndingDelimiter() : "";
+	}
+	
 	protected String getSubPackageForClientOrSqlMap(boolean isSubPackageEnabled) {
 		StringBuilder sb = new StringBuilder();
 		if(!ignoreQualifiersAtRuntime && isSubPackageEnabled) {

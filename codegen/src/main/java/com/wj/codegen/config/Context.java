@@ -38,6 +38,10 @@ public class Context extends PropertyHolder {
 	
 	private String introspectedColumnImpl;
 	
+	private String beginningDelimiter = "\"";
+	
+	private String endingDelimiter ="\"";
+	
 	public Context(ModelType defaultModelType) {
 		if(defaultModelType == null) {
 			this.defaultModelType = ModelType.HIERARCHICAL;
@@ -151,6 +155,14 @@ public class Context extends PropertyHolder {
 
 	public void setIntrospectedColumnImpl(String introspectedColumnImpl) {
 		this.introspectedColumnImpl = introspectedColumnImpl;
+	}
+
+	public String getBeginningDelimiter() {
+		return beginningDelimiter;
+	}
+
+	public String getEndingDelimiter() {
+		return endingDelimiter;
 	}
 	
 	

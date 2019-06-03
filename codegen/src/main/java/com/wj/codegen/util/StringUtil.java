@@ -35,4 +35,11 @@ public class StringUtil {
 		
 		return sb.toString();
 	}
+	
+	public static boolean stringContainSQLWildcard(String s) {
+		if(s == null) {
+			return false;
+		}
+		return s.indexOf('_') != -1 || s.indexOf('%') != -1;
+	}
 }
