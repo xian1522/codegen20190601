@@ -11,12 +11,14 @@ import java.util.List;
 import java.util.Set;
 
 import com.wj.codegen.config.Configuration;
+import com.wj.codegen.config.Context;
 import com.wj.codegen.exception.ShellException;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.callback.DefaultShellCallback;
 import com.wj.codegen.generatefile.callback.NullProgressCallBack;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.callback.ShellCallback;
+import com.wj.codegen.generatefile.internal.ObjectFactory;
 
 /**
  * 代码生成器
@@ -55,14 +57,18 @@ public class CodeGenerator {
 		projects = new HashSet<String>();
 	}
 	
-	public void generate(ProgressCallBack callback,boolean writeFiles) throws IOException {
+	public void generate(ProgressCallBack callback,Set<String> contextIds,boolean writeFiles) throws IOException {
 		
 		if(callback == null) {
 			callback = new NullProgressCallBack();
 		}
 		
 		generatedJavaFiles.clear();
+		ObjectFactory.reset();
 		
+		List<Context> contextToRun;
+		
+		// write or overwrite files start
 		if(writeFiles) {
 			for(GeneratedJavaFile gjf : generatedJavaFiles) {
 				projects.add(gjf.getTargetProject());

@@ -7,12 +7,19 @@ public class TableConfiguration extends PropertyHolder {
 	private String tableName;
 	private String alias;
 	
+	private String domainObjectName;
+	
 	private GeneratedKey generatedKey;
 	
 	/** 分隔标识符 */
 	private boolean delimitIdentifiers;
 	
 	private boolean wildcardEscapingEnabled;
+	
+	private ModelType modelType;
+	
+	/**是否生成INSERT*/
+	private boolean insertStatementEnabled;
 	
 	public boolean areAnyStatementsEnabled() {
 		return true;
@@ -67,6 +74,26 @@ public class TableConfiguration extends PropertyHolder {
 
 	public void setGeneratedKey(GeneratedKey generatedKey) {
 		this.generatedKey = generatedKey;
+	}
+
+	public String getDomainObjectName() {
+		return domainObjectName;
+	}
+
+	public void setDomainObjectName(String domainObjectName) {
+		this.domainObjectName = domainObjectName;
+	}
+
+	public ModelType getModelType() {
+		return modelType;
+	}
+
+	public boolean isInsertStatementEnabled() {
+		return insertStatementEnabled;
+	}
+
+	public void setInsertStatementEnabled(boolean insertStatementEnabled) {
+		this.insertStatementEnabled = insertStatementEnabled;
 	}
 	
 	

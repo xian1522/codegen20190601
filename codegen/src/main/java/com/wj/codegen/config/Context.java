@@ -41,6 +41,8 @@ public class Context extends PropertyHolder {
 	private String beginningDelimiter = "\"";
 	
 	private String endingDelimiter ="\"";
+	/**运行环境 db2 oracle mybatis */
+	private String targetRuntime;
 	
 	public Context(ModelType defaultModelType) {
 		if(defaultModelType == null) {
@@ -115,6 +117,15 @@ public class Context extends PropertyHolder {
 		
 		pluginAggregator = new PluginAggregator();
 		
+		//从配置里添加额外的插件..
+		
+		
+		if(introspectedTables != null) {
+			for(IntrospectedTable introspectedTable : introspectedTables) {
+				introspectedTable.initialize();
+			}
+		}
+		
 	}
 	
 	public JavaClientGeneratorConfiguration getJavaClientGeneratorConfiguration() {
@@ -163,6 +174,14 @@ public class Context extends PropertyHolder {
 
 	public String getEndingDelimiter() {
 		return endingDelimiter;
+	}
+
+	public String getTargetRuntime() {
+		return targetRuntime;
+	}
+
+	public void setTargetRuntime(String targetRuntime) {
+		this.targetRuntime = targetRuntime;
 	}
 	
 	

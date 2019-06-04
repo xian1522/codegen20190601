@@ -1,6 +1,7 @@
 package com.wj.codegen.api;
 
 import com.wj.codegen.config.Context;
+import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.javabean.FullyQualifiedJavaType;
 
 public class IntrospectedColumn {
@@ -34,6 +35,13 @@ public class IntrospectedColumn {
 	protected boolean isGeneratedColumn;
 	
 	protected boolean isColumnNameDelimited;
+	
+	protected IntrospectedTable introspectedTable;
+	
+	public boolean isBLOBColumn() {
+		String typeName = this.getJdbcTypeName();
+		return "BINARY".equals(typeName) || "BLOB".equals(typeName) || "CLOB".equals(typeName);
+	}
 
 	public String getActualColumnName() {
 		return actualColumnName;
@@ -161,6 +169,14 @@ public class IntrospectedColumn {
 
 	public void setColumnNameDelimited(boolean isColumnNameDelimited) {
 		this.isColumnNameDelimited = isColumnNameDelimited;
+	}
+
+	public IntrospectedTable getIntrospectedTable() {
+		return introspectedTable;
+	}
+
+	public void setIntrospectedTable(IntrospectedTable introspectedTable) {
+		this.introspectedTable = introspectedTable;
 	}
 	
 	

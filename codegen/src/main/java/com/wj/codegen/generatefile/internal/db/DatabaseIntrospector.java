@@ -9,12 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.config.Context;
+import com.wj.codegen.config.FullyQualifiedTable;
 import com.wj.codegen.config.GeneratedKey;
 import com.wj.codegen.config.IntrospectedTable;
+import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
 import com.wj.codegen.util.StringUtil;
@@ -233,8 +236,79 @@ public class DatabaseIntrospector {
 		List<IntrospectedTable> answer = new ArrayList<IntrospectedTable>();
 		for(Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
 			ActualTableName atn = entry.getKey();
+			
+			FullyQualifiedTable table = new  FullyQualifiedTable(
+					StringUtil.stringHasValue(tc.getCatalog())?atn.getCatalog():null,
+					StringUtil.stringHasValue(tc.getSchema())?atn.getSchema():null,
+					atn.getTableName(),
+					tc.getDomainObjectName(),
+					tc.getAlias(),
+					StringUtil.isTrue(tc.getProperty(PropertyRegistry.TABLE_IGNORE_QUALIFIERS_AT_RUNTIME)),
+					tc.getProperty(PropertyRegistry.TABLE_RUNTIME_CATALOG),
+					tc.getProperty(PropertyRegistry.TABLE_RUNTIME_SCHEMA),
+					tc.getProperty(PropertyRegistry.TABLE_RUNTIME_TABLE_NAME),
+					delimitIdentifiers,context);
+			
+			IntrospectedTable introspectedTable = ObjectFactory.createIntrospectedTable(tc, table, context);
+			
+			for(IntrospectedColumn column : entry.getValue()) {
+				introspectedTable.addColumn(column);
+			}
+			
+			this.calculatePrimaryKey(table, introspectedTable);
+			this.enhanceIntrospectedTable(introspectedTable);
+			
+			answer.add(introspectedTable);
 		}
 		
 		return answer;
+	}
+	
+	private void calculatePrimaryKey(FullyQualifiedTable table,IntrospectedTable introspectedTable) {
+		ResultSet rs = null;
+		
+		try {
+			rs = databaseMetaData.getPrimaryKeys(table.getIntrospectedCatalog(), 
+					table.getIntrospectedSchema(), table.getIntrospectedTableName());
+		} catch (SQLException e) {
+			this.closeResultSet(rs);
+			warnings.add("getPrimaryKeys error");
+			return;
+		}
+		
+		try {
+			Map<Short,String> keyColumns = new TreeMap<Short,String>();
+			while(rs.next()) {
+				String columnName = rs.getString("COLUMN_NAME");
+				short keyseq = rs.getShort("KEY_SEQ");
+				keyColumns.put(keyseq, columnName);
+			}
+			
+			for(String columnName : keyColumns.values()) {
+				introspectedTable.addPrimaryKeyColumn(columnName);
+			}
+		} catch (SQLException e) {
+		}finally {
+			this.closeResultSet(rs);
+		}
+	}
+	
+	private void enhanceIntrospectedTable(IntrospectedTable introspectedTable) {
+		
+		FullyQualifiedTable table = introspectedTable.getFullyQualifiedTable();
+		try {
+			ResultSet rs = databaseMetaData.getTables(table.getIntrospectedCatalog(), table.getIntrospectedSchema(), 
+					table.getIntrospectedTableName(), null);
+			if(rs.next()) {
+				String remarks = rs.getString("REMARKS");
+				String tableType = rs.getString("TABLE_TYPE");
+				introspectedTable.setRemark(remarks);
+				introspectedTable.setTableType(tableType);
+			}
+			this.closeResultSet(rs);
+		} catch (SQLException e) {
+			warnings.add("enhanceIntrospectedTable error");
+		}
+		
 	}
 }

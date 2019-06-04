@@ -8,7 +8,11 @@ import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.config.ConnectionFactoryConfiguration;
 import com.wj.codegen.config.Context;
+import com.wj.codegen.config.FullyQualifiedTable;
+import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.JavaTypeResolverConfiguration;
+import com.wj.codegen.config.TableConfiguration;
+import com.wj.codegen.generatefile.oracle.IntrospectedTableOracleImpl;
 import com.wj.codegen.util.StringUtil;
 
 public class ObjectFactory {
@@ -17,6 +21,10 @@ public class ObjectFactory {
 	
 	static {
 		externalClassLoaders = new ArrayList<ClassLoader>();
+	}
+	
+	public static void reset() {
+		externalClassLoaders.clear();
 	}
 	
 	public static JavaTypeResolver createJavaTypeResolver(Context context, List<String> warnings) {
@@ -114,6 +122,26 @@ public class ObjectFactory {
 		}
 		
 		IntrospectedColumn answer = (IntrospectedColumn)createInternalObject(type);
+		answer.setContext(context);
+		
+		return answer;
+	}
+	
+	public static IntrospectedTable createIntrospectedTable(TableConfiguration tc,
+			FullyQualifiedTable table,Context context) {
+		IntrospectedTable answer = createIntrospectedTableForValidation(context);
+		answer.setFullyQualifiedTable(table);
+		answer.setTableConfiguration(tc);
+		
+		return answer;
+	}
+	
+	public static IntrospectedTable createIntrospectedTableForValidation(Context context) {
+		String type = context.getTargetRuntime();
+		if(!StringUtil.stringHasValue(type)) {
+			type = IntrospectedTableOracleImpl.class.getName();
+		}
+		IntrospectedTable answer = (IntrospectedTable) createInternalObject(type);
 		answer.setContext(context);
 		
 		return answer;

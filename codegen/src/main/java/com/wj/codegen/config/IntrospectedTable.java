@@ -1,7 +1,12 @@
 package com.wj.codegen.config;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import com.wj.codegen.api.IntrospectedColumn;
+import com.wj.codegen.generatefile.internal.rules.HierarchicalModelRules;
+import com.wj.codegen.generatefile.internal.rules.Rules;
 import com.wj.codegen.util.StringUtil;
 
 /**
@@ -17,13 +22,28 @@ public abstract class IntrospectedTable {
 		ATTR_BASE_RECORD_TYPE
 	}
 	protected Context context;
+	protected TableConfiguration tableConfiguration;
 	protected FullyQualifiedTable fullyQualifiedTable;
 	protected Map<IntrospectedTable.InternalAttribute,String>internalAttributes;
+	
+	protected List<IntrospectedColumn> blobColumns;
+	protected List<IntrospectedColumn> baseColumns;
+	protected List<IntrospectedColumn> primaryKeyColumns;
+	
+	protected String remark;
+	protected String tableType;
+	
+	protected Rules rules;
 	
 	
 	public void initialize() {
 		calculateJavaClientAttributes(); //组装DAO层包名并保存到缓存中
 		calculateModelAttributes();//组装model层包名并保存到缓存中
+		
+		if(tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
+			rules = new HierarchicalModelRules(this);
+		}
+		
 	}
 	
 	protected void calculateModelAttributes() {
@@ -100,6 +120,42 @@ public abstract class IntrospectedTable {
 		return sb.toString();
 	}
 	
+	public void addColumn(IntrospectedColumn introspectedColumn) {
+		if(introspectedColumn.isBLOBColumn()) {
+			blobColumns.add(introspectedColumn);
+		}else {
+			baseColumns.add(introspectedColumn);
+		}
+		introspectedColumn.setIntrospectedTable(this);
+	}
+	
+	public void addPrimaryKeyColumn(String columnName) {
+		boolean found = false;
+		Iterator<IntrospectedColumn> iter = baseColumns.iterator();
+		while(iter.hasNext()) {
+			IntrospectedColumn column = iter.next();
+			if(column.getActualColumnName().equals(columnName)) {
+				primaryKeyColumns.add(column);
+				iter.remove();
+				found = true;
+				break;
+			}
+		}
+		
+		if(!found) {
+			iter = blobColumns.iterator();
+			while(iter.hasNext()) {
+				IntrospectedColumn column = iter.next();
+				if(column.getActualColumnName().equals(columnName)) {
+					primaryKeyColumns.add(column);
+					iter.remove();
+					found = true;
+					break;
+				}
+			}
+		}
+	}
+	
 	private boolean isSubPackagesEnabled(PropertyHolder propertyHolder) {
 		return StringUtil.isTrue(propertyHolder.getProperty(PropertyRegistry.ANY_ENABLE_SUB_PACKAGES));
 	}
@@ -122,6 +178,58 @@ public abstract class IntrospectedTable {
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+
+	public FullyQualifiedTable getFullyQualifiedTable() {
+		return fullyQualifiedTable;
+	}
+
+	public void setFullyQualifiedTable(FullyQualifiedTable fullyQualifiedTable) {
+		this.fullyQualifiedTable = fullyQualifiedTable;
+	}
+
+	public TableConfiguration getTableConfiguration() {
+		return tableConfiguration;
+	}
+
+	public void setTableConfiguration(TableConfiguration tableConfiguration) {
+		this.tableConfiguration = tableConfiguration;
+	}
+
+	public List<IntrospectedColumn> getBlobColumns() {
+		return blobColumns;
+	}
+
+	public List<IntrospectedColumn> getBaseColumns() {
+		return baseColumns;
+	}
+
+	public List<IntrospectedColumn> getPrimaryKeyColumns() {
+		return primaryKeyColumns;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
+	}
+
+	public Rules getRules() {
+		return rules;
+	}
+
+	public void setRules(Rules rules) {
+		this.rules = rules;
 	}
 	
 	
