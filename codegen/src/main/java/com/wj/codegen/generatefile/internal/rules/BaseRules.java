@@ -29,5 +29,19 @@ public abstract class BaseRules implements Rules {
 		return introspectedTable;
 	}
 	
+	public boolean generateExampleClass() {
+		if(introspectedTable.getContext().getJavaClientGeneratorConfiguration() == null) {
+			return false;
+		}
+		
+		if(isModelOnly) {
+			return false;
+		}
+		
+		boolean rc = tableConfiguration.isDeleteByPrimaryKeyStatementEnabled()
+				|| tableConfiguration.isUpdateByPrimaryKeyStatementEnabled()
+				|| tableConfiguration.isSelectByExampleStatementEnabled();
+		return rc;
+	}
 
 }

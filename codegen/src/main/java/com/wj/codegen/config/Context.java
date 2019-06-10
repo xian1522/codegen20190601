@@ -10,6 +10,7 @@ import com.wj.codegen.api.ConnectionFactory;
 import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.GeneratedXmlFile;
+import com.wj.codegen.generatefile.JavaFormatter;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.internal.JDBCConnectionFactory;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
@@ -43,6 +44,8 @@ public class Context extends PropertyHolder {
 	private String endingDelimiter ="\"";
 	/**运行环境 db2 oracle mybatis */
 	private String targetRuntime;
+	
+	private JavaFormatter javaFormatter;
 	
 	public Context(ModelType defaultModelType) {
 		if(defaultModelType == null) {
@@ -123,6 +126,9 @@ public class Context extends PropertyHolder {
 		if(introspectedTables != null) {
 			for(IntrospectedTable introspectedTable : introspectedTables) {
 				introspectedTable.initialize();
+				/**生成javaModelGenerator并放入缓存中 */
+				introspectedTable.calculateGenerators(warnings, callback);
+				generatedJavaFiles.addAll(introspectedTable.getGeneratedJavaFiles());
 			}
 		}
 		
@@ -184,7 +190,12 @@ public class Context extends PropertyHolder {
 		this.targetRuntime = targetRuntime;
 	}
 	
-	
+	public JavaFormatter getJavaFormatter() {
+		if(javaFormatter == null) {
+			javaFormatter = ObjectFactory.createJavaFormatter(this);
+		}
+		return javaFormatter;
+	}
 	
 	
 }

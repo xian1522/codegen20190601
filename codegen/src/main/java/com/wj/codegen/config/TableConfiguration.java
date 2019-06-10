@@ -20,6 +20,10 @@ public class TableConfiguration extends PropertyHolder {
 	
 	/**是否生成INSERT*/
 	private boolean insertStatementEnabled;
+	private boolean selectByExampleStatementEnabled;
+	private boolean updateByPrimaryKeyStatementEnabled;
+	private boolean deleteByPrimaryKeyStatementEnabled;
+	
 	
 	public boolean areAnyStatementsEnabled() {
 		return true;
@@ -94,6 +98,30 @@ public class TableConfiguration extends PropertyHolder {
 
 	public void setInsertStatementEnabled(boolean insertStatementEnabled) {
 		this.insertStatementEnabled = insertStatementEnabled;
+	}
+
+	public boolean isSelectByExampleStatementEnabled() {
+		return selectByExampleStatementEnabled;
+	}
+
+	public void setSelectByExampleStatementEnabled(boolean selectByExampleStatementEnabled) {
+		this.selectByExampleStatementEnabled = selectByExampleStatementEnabled;
+	}
+
+	public boolean isUpdateByPrimaryKeyStatementEnabled() {
+		return updateByPrimaryKeyStatementEnabled;
+	}
+
+	public void setUpdateByPrimaryKeyStatementEnabled(boolean updateByPrimaryKeyStatementEnabled) {
+		this.updateByPrimaryKeyStatementEnabled = updateByPrimaryKeyStatementEnabled;
+	}
+
+	public boolean isDeleteByPrimaryKeyStatementEnabled() {
+		return deleteByPrimaryKeyStatementEnabled;
+	}
+
+	public void setDeleteByPrimaryKeyStatementEnabled(boolean deleteByPrimaryKeyStatementEnabled) {
+		this.deleteByPrimaryKeyStatementEnabled = deleteByPrimaryKeyStatementEnabled;
 	}
 	
 	

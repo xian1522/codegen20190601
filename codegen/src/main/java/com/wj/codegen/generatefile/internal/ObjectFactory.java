@@ -11,7 +11,10 @@ import com.wj.codegen.config.Context;
 import com.wj.codegen.config.FullyQualifiedTable;
 import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.JavaTypeResolverConfiguration;
+import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
+import com.wj.codegen.generatefile.DefaultJavaFormatter;
+import com.wj.codegen.generatefile.JavaFormatter;
 import com.wj.codegen.generatefile.oracle.IntrospectedTableOracleImpl;
 import com.wj.codegen.util.StringUtil;
 
@@ -144,6 +147,16 @@ public class ObjectFactory {
 		IntrospectedTable answer = (IntrospectedTable) createInternalObject(type);
 		answer.setContext(context);
 		
+		return answer;
+	}
+
+	public static JavaFormatter createJavaFormatter(Context context) {
+		String type = context.getProperty(PropertyRegistry.CONTEXT_JAVA_FORMATTER);
+		if(!StringUtil.stringHasValue(type)) {
+			type = DefaultJavaFormatter.class.getName(); 
+		}
+		JavaFormatter answer = (JavaFormatter)createInternalObject(type);
+		answer.setContext(context);
 		return answer;
 	}
 }

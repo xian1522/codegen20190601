@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wj.codegen.api.IntrospectedColumn;
+import com.wj.codegen.generatefile.GeneratedJavaFile;
+import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.internal.rules.HierarchicalModelRules;
 import com.wj.codegen.generatefile.internal.rules.Rules;
 import com.wj.codegen.util.StringUtil;
@@ -15,6 +17,10 @@ import com.wj.codegen.util.StringUtil;
  *
  */
 public abstract class IntrospectedTable {
+	
+	public enum TargetRuntime{
+		ORACLE
+	}
 	
 	protected enum InternalAttribute{
 		ATTR_DAO_IMPLEMETATION_TYPE, 
@@ -43,6 +49,12 @@ public abstract class IntrospectedTable {
 		if(tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
 			rules = new HierarchicalModelRules(this);
 		}
+		
+	}
+	
+	public abstract void calculateGenerators(List<String> warnigns,ProgressCallBack progressCallback); 
+	
+	public IntrospectedTable(TargetRuntime targetRuntime) {
 		
 	}
 	
@@ -155,6 +167,8 @@ public abstract class IntrospectedTable {
 			}
 		}
 	}
+	
+	public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
 	
 	private boolean isSubPackagesEnabled(PropertyHolder propertyHolder) {
 		return StringUtil.isTrue(propertyHolder.getProperty(PropertyRegistry.ANY_ENABLE_SUB_PACKAGES));

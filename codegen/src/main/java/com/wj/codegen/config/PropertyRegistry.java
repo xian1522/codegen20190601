@@ -12,4 +12,7 @@ public class PropertyRegistry {
 	public static final String TABLE_RUNTIME_TABLE_NAME = "runtimeTableName";
 	
 	public static final String TABLE_MODEL_ONLY = "modelOnly";
+	
+	public static final String CONTEXT_JAVA_FILE_ENCODING = "javaFielEncoding";
+	public static final String CONTEXT_JAVA_FORMATTER = "javaFormatter";
 }
