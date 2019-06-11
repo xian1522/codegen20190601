@@ -20,6 +20,8 @@ import com.wj.codegen.util.StringUtil;
 
 public class Context extends PropertyHolder {
 	
+	private String id;
+	
 	private ModelType defaultModelType;
 	
 	private JavaClientGeneratorConfiguration javaClientGeneratorConfiguration;
@@ -195,6 +197,14 @@ public class Context extends PropertyHolder {
 			javaFormatter = ObjectFactory.createJavaFormatter(this);
 		}
 		return javaFormatter;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
 	}
 	
 	

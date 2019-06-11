@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +27,7 @@ import com.wj.codegen.generatefile.internal.ObjectFactory;
 * @author w.j
 * @date 2019年5月21日 下午4:10:44
  */
-public class CodeGenerator {
+public class HibernateCodeGenerator {
 	
 	private ShellCallback shellCallback;
 	private Configuration configuration;
@@ -36,7 +37,7 @@ public class CodeGenerator {
 	/** 意义不明。。*/
 	private Set<String> projects;
 	
-	public CodeGenerator(Configuration configuration, ShellCallback shellCallback,List<String> warnings) {
+	public HibernateCodeGenerator(Configuration configuration, ShellCallback shellCallback,List<String> warnings) {
 		if(configuration == null) {
 			throw new IllegalArgumentException("configuration is null");
 		}else {
@@ -57,7 +58,13 @@ public class CodeGenerator {
 		projects = new HashSet<String>();
 	}
 	
-	public void generate(ProgressCallBack callback,Set<String> contextIds,boolean writeFiles) throws IOException {
+	public void generate(ProgressCallBack callback) throws IOException, SQLException, InterruptedException {
+		generate(callback,null,null,true);
+	}
+	
+	public void generate(ProgressCallBack callback,Set<String> contextIds,
+			Set<String> fullyQualifiedTableNames, boolean writeFiles) throws IOException, 
+	SQLException, InterruptedException {
 		
 		if(callback == null) {
 			callback = new NullProgressCallBack();
@@ -67,6 +74,26 @@ public class CodeGenerator {
 		ObjectFactory.reset();
 		
 		List<Context> contextToRun;
+		if(contextIds == null || contextIds.size() == 0) {
+			contextToRun = configuration.getContexts();
+		}else {
+			contextToRun = new ArrayList<Context>();
+			for(Context context : configuration.getContexts()) {
+				if(contextIds.contains(context.getId())) {
+					contextToRun.add(context);
+				}
+			}
+		}
+		
+		/**calculate introspectedTable*/
+		for(Context context : contextToRun) {
+			context.introspectTables(callback, warnings, fullyQualifiedTableNames);
+		}
+		
+		/** generate generatedJavaFiles*/
+		for(Context context : contextToRun) {
+			context.generateFiles(callback, generatedJavaFiles, null, warnings);
+		}
 		
 		// write or overwrite files start
 		if(writeFiles) {
