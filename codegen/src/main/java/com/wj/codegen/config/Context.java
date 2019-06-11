@@ -206,6 +206,10 @@ public class Context extends PropertyHolder {
 	public String getId() {
 		return id;
 	}
+
+	public ModelType getDefaultModelType() {
+		return defaultModelType;
+	}
 	
 	
 }

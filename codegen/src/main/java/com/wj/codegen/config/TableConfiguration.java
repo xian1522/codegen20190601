@@ -24,6 +24,10 @@ public class TableConfiguration extends PropertyHolder {
 	private boolean updateByPrimaryKeyStatementEnabled;
 	private boolean deleteByPrimaryKeyStatementEnabled;
 	
+	public TableConfiguration(Context context) {
+		this.modelType = context.getDefaultModelType();
+	}
+	
 	
 	public boolean areAnyStatementsEnabled() {
 		return true;

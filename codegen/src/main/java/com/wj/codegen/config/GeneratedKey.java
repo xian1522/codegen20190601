@@ -8,6 +8,14 @@ public class GeneratedKey {
 	private String type;
 	
 	private String runtimeSqlStatement;
+	
+	
+	public GeneratedKey(String column, String configuredSqlStatement,
+			boolean isIdentity,String type) {
+		this.column = column;
+		this.type = type;
+		this.isIdentity = isIdentity;
+	}
 
 	public String getColumn() {
 		return column;
