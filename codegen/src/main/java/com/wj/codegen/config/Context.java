@@ -44,7 +44,7 @@ public class Context extends PropertyHolder {
 	private String beginningDelimiter = "\"";
 	
 	private String endingDelimiter ="\"";
-	/**运行环境 db2 oracle mybatis */
+	/** 代码环境 HIBERNATE MYBATIS */
 	private String targetRuntime;
 	
 	private JavaFormatter javaFormatter;
@@ -211,5 +211,8 @@ public class Context extends PropertyHolder {
 		return defaultModelType;
 	}
 	
+	public void addTableConfiguration(TableConfiguration tc) {
+		tableConfigurations.add(tc);
+	}
 	
 }

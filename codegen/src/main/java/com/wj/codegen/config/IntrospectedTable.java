@@ -1,5 +1,7 @@
 package com.wj.codegen.config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +57,10 @@ public abstract class IntrospectedTable {
 	public abstract void calculateGenerators(List<String> warnigns,ProgressCallBack progressCallback); 
 	
 	public IntrospectedTable(TargetRuntime targetRuntime) {
-		
+		primaryKeyColumns = new ArrayList<IntrospectedColumn>();
+		blobColumns = new ArrayList<IntrospectedColumn>();
+		baseColumns = new ArrayList<IntrospectedColumn>();
+		internalAttributes = new HashMap<IntrospectedTable.InternalAttribute,String>();
 	}
 	
 	protected void calculateModelAttributes() {

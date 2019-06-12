@@ -14,5 +14,8 @@ public class Configuration {
 		return contexts;
 	}
 	
+	public void addContext(Context context) {
+		contexts.add(context);
+	}
 	
 }

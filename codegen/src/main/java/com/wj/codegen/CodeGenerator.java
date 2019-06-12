@@ -1,10 +1,17 @@
 package com.wj.codegen;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.GeneratedKey;
 import com.wj.codegen.config.JDBCConnectionConfiguration;
+import com.wj.codegen.config.JavaModelGeneratorConfiguration;
 import com.wj.codegen.config.ModelType;
+import com.wj.codegen.config.ProjectConstant;
 import com.wj.codegen.config.TableConfiguration;
+import com.wj.codegen.generatefile.callback.DefaultShellCallback;
 import com.wj.codegen.util.StringUtil;
 
 public class CodeGenerator {
@@ -14,10 +21,28 @@ public class CodeGenerator {
 	private static final String JDBC_PASSWORD = "joyin123";
 	private static final String JDBC_DIVER_CLASS_NAME = "oracle.jdbc.driver.OracleDriver";
 	
+	 private static final String PROJECT_PATH = System.getProperty("user.dir");
+	 private static final String JAVA_PATH = "/src/main/java"; //java文件路径
+	
+	public static void main(String[] args) {
+		genCode("repo_deal");
+	}
+	
+	public static void genCode(String...tableNames) {
+		for(String tableName : tableNames) {
+			genCodeByCustomModelName(tableName,null);
+		}
+	}
+	
+	public static void genCodeByCustomModelName(String tableName,String modelName) {
+		genModelAndMapper(tableName,modelName);
+	}
+	
 	public static void genModelAndMapper(String tableName,String modelName) {
 		Context context = new Context(ModelType.HIERARCHICAL);
 		context.setId("Potato");
-		context.setTargetRuntime("Hibernate");
+		/** 不指定 默认为IntrospectedTableOracleImpl*/
+		//context.setTargetRuntime("Hibernate");
 		
 		JDBCConnectionConfiguration jdbcConfig = new JDBCConnectionConfiguration();
 		jdbcConfig.setConnectionURL(JDBC_URL);
@@ -26,12 +51,36 @@ public class CodeGenerator {
 		jdbcConfig.setDriverClass(JDBC_DIVER_CLASS_NAME);
 		context.setJdbcConnectionConfiguration(jdbcConfig);
 		
+		JavaModelGeneratorConfiguration javaModelGeneratorConfig = new JavaModelGeneratorConfiguration();
+		javaModelGeneratorConfig.setTargetProject(PROJECT_PATH+JAVA_PATH);
+		javaModelGeneratorConfig.setTargetPackage(ProjectConstant.MODEL_PACKAGE);
+		
+		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);
 		if(StringUtil.stringHasValue(modelName)) {
 			tableConfiguration.setDomainObjectName(modelName);
 		}
 		tableConfiguration.setGeneratedKey(new GeneratedKey("id","Mysql",true,null));
+		context.addTableConfiguration(tableConfiguration);
+		
+		List<String> warnings;
+		HibernateCodeGenerator generator;
+		try {
+			Configuration config = new Configuration();
+			config.addContext(context);
+			
+			boolean overwrite = true;
+			DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+			warnings = new ArrayList<String>();
+			generator = new HibernateCodeGenerator(config,callback,warnings);
+			generator.generate(null);
+			
+		}catch(Exception e) {
+			throw new RuntimeException("生成Model失败",e);
+		}
+		
+		System.out.println(modelName + ".java 生成成功");
 		
 	}
 }
