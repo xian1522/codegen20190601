@@ -82,7 +82,9 @@ public class DatabaseIntrospector {
 			localSchema = tc.getSchema() == null ? null : tc.getSchema().toLowerCase();
 			localTableName = tc.getTableName() == null ? null : tc.getTableName().toLowerCase();
 		}else if(databaseMetaData.storesUpperCaseIdentifiers()) {
-			
+			localCatalog = tc.getCatalog() == null ? null :tc.getCatalog().toUpperCase();
+			localSchema = tc.getSchema() == null ? null : tc.getSchema().toUpperCase();
+			localTableName = tc.getTableName() == null ? null : tc.getTableName().toUpperCase();
 		}else {
 			localCatalog = tc.getCatalog();
 			localSchema = tc.getSchema();

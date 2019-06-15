@@ -30,9 +30,9 @@ public abstract class BaseRules implements Rules {
 	}
 	
 	public boolean generateExampleClass() {
-		if(introspectedTable.getContext().getJavaClientGeneratorConfiguration() == null) {
-			return false;
-		}
+//		if(introspectedTable.getContext().getJavaClientGeneratorConfiguration() == null) {
+//			return false;
+//		}
 		
 		if(isModelOnly) {
 			return false;

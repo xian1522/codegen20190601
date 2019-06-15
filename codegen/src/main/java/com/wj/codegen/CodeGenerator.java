@@ -58,6 +58,7 @@ public class CodeGenerator {
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);
+		tableConfiguration.setSchema("SC0412");
 		if(StringUtil.stringHasValue(modelName)) {
 			tableConfiguration.setDomainObjectName(modelName);
 		}

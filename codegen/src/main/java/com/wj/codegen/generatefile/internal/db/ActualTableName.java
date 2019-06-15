@@ -30,5 +30,18 @@ public class ActualTableName {
 	public String toString() {
 		return fullName;
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || !(obj instanceof ActualTableName)) {
+			return false;
+		}
+		return obj.toString().equals(this.toString());
+	}
+	
+	@Override
+	public int hashCode() {
+		return fullName.hashCode();
+	}
+	
 }

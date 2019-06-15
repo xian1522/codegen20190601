@@ -26,6 +26,8 @@ public class TableConfiguration extends PropertyHolder {
 	
 	public TableConfiguration(Context context) {
 		this.modelType = context.getDefaultModelType();
+		
+		selectByExampleStatementEnabled = true;
 	}
 	
 	
