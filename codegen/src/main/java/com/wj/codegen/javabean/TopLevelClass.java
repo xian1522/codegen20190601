@@ -1,6 +1,7 @@
 package com.wj.codegen.javabean;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.wj.codegen.util.OutputUtilities;
 import com.wj.codegen.util.StringUtil;
@@ -8,6 +9,11 @@ import com.wj.codegen.util.StringUtil;
 public class TopLevelClass extends InnerCalss implements CompilationUnit {
 	
 	private Set<FullyQualifiedJavaType> importedTypes;
+	
+	public TopLevelClass(FullyQualifiedJavaType type) {
+		//这里为什么要用TreeSet?
+		importedTypes = new TreeSet<FullyQualifiedJavaType>();
+	}
 	
 	public String getFormattedContent() {
 		StringBuilder sb = new StringBuilder();

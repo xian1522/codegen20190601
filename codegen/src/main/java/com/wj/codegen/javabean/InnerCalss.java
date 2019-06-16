@@ -95,6 +95,10 @@ public class InnerCalss extends JavaElement {
 	public List<Method> getMethods() {
 		return methods;
 	}
+	
+	public void addMethod(Method method) {
+		methods.add(method);
+	}
 
 	public FullyQualifiedJavaType getType() {
 		return type;
@@ -114,5 +118,9 @@ public class InnerCalss extends JavaElement {
 
 	public void addSuperInterfaceTypes(FullyQualifiedJavaType type) {
 		superInterfaceTypes.add(type);
+	}
+	
+	public void addField(Field field) {
+		this.fields.add(field);
 	}
 }

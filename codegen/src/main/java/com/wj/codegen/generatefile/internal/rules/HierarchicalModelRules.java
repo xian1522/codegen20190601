@@ -8,4 +8,8 @@ public class HierarchicalModelRules extends BaseRules {
 		super(introspectedTable);
 	}
 
+	public boolean generatePrimaryKeyClass() {
+		return introspectedTable.hasPrimaryKeyColumns();
+	}
+
 }

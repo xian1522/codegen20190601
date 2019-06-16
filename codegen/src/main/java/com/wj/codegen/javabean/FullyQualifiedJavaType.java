@@ -12,7 +12,18 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 	private List<FullyQualifiedJavaType> typeArguments;
 	private boolean explicitlyImported;
 	
+	private boolean wildcardType;
+	private boolean boundedWildcard;
+	private boolean extendsBoundedWildcard;
 	
+	private static FullyQualifiedJavaType booleanPrimitiveInstance = null;
+	private static FullyQualifiedJavaType stringInstance = null;
+	
+	
+	public FullyQualifiedJavaType(String fullyTypeSpecification) {
+		typeArguments = new ArrayList<FullyQualifiedJavaType>();
+		parse(fullyTypeSpecification);
+	}
 	
 	
 	public List<String> getImportList(){
@@ -33,6 +44,34 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 			answer.addAll(fqjt.getImportList());
 		}
 		return answer;
+	}
+	
+	private void parse(String fullTypeSpecification) {
+		String spec = fullTypeSpecification.trim();
+		
+		if(spec.startsWith("?")) {
+			wildcardType = true;
+			spec = spec.substring(1).trim();
+			if(spec.startsWith("extends ")) {
+				boundedWildcard = true;
+				extendsBoundedWildcard = true;
+				spec = spec.substring(8);
+			}else if(spec.startsWith("super ")) {
+				boundedWildcard = true;
+				extendsBoundedWildcard = true;
+				spec = spec.substring(6);
+			}else {
+				boundedWildcard = false;
+			}
+			parse(spec);
+		}else {
+			int index = fullTypeSpecification.indexOf('<');
+			if(index == -1) {
+				//simpleParse(fullTypeSpecification);
+			}else {
+				//simpleParse(fullTypeSpecification.substring(0,index));
+			}
+		}
 	}
 	
 	public String getShortName() {
@@ -63,5 +102,18 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 		return explicitlyImported;
 	}
 	
+	public static final FullyQualifiedJavaType getBooleanPrimitiveInstance() {
+		if(booleanPrimitiveInstance == null) {
+			booleanPrimitiveInstance = new FullyQualifiedJavaType("boolean");
+		}
+		return booleanPrimitiveInstance;
+	}
 	
+	public static final FullyQualifiedJavaType getStringInstance() {
+		if(stringInstance == null) {
+			stringInstance = new FullyQualifiedJavaType("java.lang.String");
+		}
+		
+		return stringInstance;
+	}
 }

@@ -102,6 +102,10 @@ public class Method extends JavaElement {
 	public List<String> getBodyLines(){
 		return bodyLines;
 	}
+	
+	public void addBodyLine(String line) {
+		bodyLines.add(line);
+	}
 
 	public boolean isConstructor() {
 		return constructor;
@@ -129,6 +133,10 @@ public class Method extends JavaElement {
 	
 	public List<Parameter> getParameter(){
 		return this.parameters;
+	}
+	
+	public void addParameter(Parameter parameter) {
+		parameters.add(parameter);
 	}
 
 	public List<FullyQualifiedJavaType> getExceptions() {

@@ -5,4 +5,6 @@ public interface Rules {
 	boolean generateInsert();
 	
 	boolean generateExampleClass();
+
+	boolean generatePrimaryKeyClass();
 }

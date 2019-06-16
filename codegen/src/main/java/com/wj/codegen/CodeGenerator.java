@@ -16,16 +16,21 @@ import com.wj.codegen.util.StringUtil;
 
 public class CodeGenerator {
 	
-	private static final String JDBC_URL = "jdbc:oracle:thin:127.0.0.1:1521:orcl";
-	private static final String JDBC_USERNAME = "ticmsc";
-	private static final String JDBC_PASSWORD = "joyin123";
-	private static final String JDBC_DIVER_CLASS_NAME = "oracle.jdbc.driver.OracleDriver";
+//	private static final String JDBC_URL = "jdbc:oracle:thin:127.0.0.1:1521:orcl";
+//	private static final String JDBC_USERNAME = "ticmsc";
+//	private static final String JDBC_PASSWORD = "joyin123";
+//	private static final String JDBC_DIVER_CLASS_NAME = "oracle.jdbc.driver.OracleDriver";
+	
+	private static final String JDBC_URL = "jdbc:mysql://localhost:3306/jeesite";
+    private static final String JDBC_USERNAME = "root";
+    private static final String JDBC_PASSWORD = "root";
+    private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 	
 	 private static final String PROJECT_PATH = System.getProperty("user.dir");
 	 private static final String JAVA_PATH = "/src/main/java"; //java文件路径
 	
 	public static void main(String[] args) {
-		genCode("repo_deal");
+		genCode("sys_user");
 	}
 	
 	public static void genCode(String...tableNames) {
@@ -58,7 +63,7 @@ public class CodeGenerator {
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);
-		tableConfiguration.setSchema("SC0412");
+	//	tableConfiguration.setSchema("SC0412");
 		if(StringUtil.stringHasValue(modelName)) {
 			tableConfiguration.setDomainObjectName(modelName);
 		}

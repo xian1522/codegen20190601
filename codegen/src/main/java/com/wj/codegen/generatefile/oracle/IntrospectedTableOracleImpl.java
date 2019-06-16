@@ -8,6 +8,7 @@ import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.oracle.model.ExampleGenerator;
+import com.wj.codegen.generatefile.oracle.model.SimpleModelGenerator;
 import com.wj.codegen.javabean.CompilationUnit;
 
 public class IntrospectedTableOracleImpl extends IntrospectedTable {
@@ -60,7 +61,7 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 	
 	protected void calculateJavaModelGenerators(List<String>warnings,ProgressCallBack progressCallback) {
 		if(this.getRules().generateExampleClass()) {
-			AbstractJavaGenerator javaGenerator = new ExampleGenerator();
+			AbstractJavaGenerator javaGenerator = new SimpleModelGenerator();
 			this.initializeAbstractGenerator(javaGenerator, warnings, progressCallback);
 			javaModelGenerators.add(javaGenerator);
 		}

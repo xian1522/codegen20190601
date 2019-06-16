@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
@@ -27,7 +28,9 @@ public abstract class IntrospectedTable {
 	protected enum InternalAttribute{
 		ATTR_DAO_IMPLEMETATION_TYPE, 
 		ATTR_DAO_INTERFACE_TYPE, 
-		ATTR_BASE_RECORD_TYPE
+		ATTR_BASE_RECORD_TYPE,
+		
+		ATTR_EXAMPLE_TYPE,
 	}
 	protected Context context;
 	protected TableConfiguration tableConfiguration;
@@ -173,6 +176,35 @@ public abstract class IntrospectedTable {
 		}
 	}
 	
+	public boolean isConstructorBased() {
+		if(isImmutable()) {
+			return true;
+		}
+		
+		Properties properties;
+		if(tableConfiguration.getProperties().containsKey(PropertyRegistry.ANY_CONSTRUCTOR_BASED)) {
+			properties = tableConfiguration.getProperties();
+		}else {
+			properties = context.getJavaClientGeneratorConfiguration().getProperties();
+		}
+		return StringUtil.isTrue(properties.getProperty(PropertyRegistry.ANY_CONSTRUCTOR_BASED));
+	}
+	
+	/** 
+	 * checks if is immutable
+	 * @return
+	 */
+	public boolean isImmutable() {
+		Properties properties;
+		
+		if(tableConfiguration.getProperties().containsKey(PropertyRegistry.ANY_IMMUTABLE)) {
+			properties = tableConfiguration.getProperties();
+		}else {
+			properties = context.getJavaClientGeneratorConfiguration().getProperties();
+		}
+		return StringUtil.isTrue(properties.getProperty(PropertyRegistry.ANY_IMMUTABLE));
+	}
+	
 	public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
 	
 	private boolean isSubPackagesEnabled(PropertyHolder propertyHolder) {
@@ -189,6 +221,10 @@ public abstract class IntrospectedTable {
 	
 	public void setBaseRecordType(String baseRecordType) {
 		internalAttributes.put(InternalAttribute.ATTR_BASE_RECORD_TYPE, baseRecordType);
+	}
+	
+	public String getBaseRecordType() {
+		return internalAttributes.get(InternalAttribute.ATTR_BASE_RECORD_TYPE);
 	}
 
 	public Context getContext() {
@@ -251,5 +287,27 @@ public abstract class IntrospectedTable {
 		this.rules = rules;
 	}
 	
+	public String getExampleType() {
+		return internalAttributes.get(InternalAttribute.ATTR_EXAMPLE_TYPE);
+	}
 	
+	public void setExampleType(String exampleType) {
+		internalAttributes.put(InternalAttribute.ATTR_EXAMPLE_TYPE, exampleType);
+	}
+	
+	public String getTableConfigurationProperty(String property) {
+		return tableConfiguration.getProperty(property);
+	}
+	
+	public List<IntrospectedColumn> getAllColumns(){
+		List<IntrospectedColumn> answer = new ArrayList<IntrospectedColumn>();
+		answer.addAll(primaryKeyColumns);
+		answer.addAll(baseColumns);
+		answer.addAll(blobColumns);
+		return answer;
+	}
+	
+	public boolean hasPrimaryKeyColumns() {
+		return primaryKeyColumns.size() > 0;
+	}
 }

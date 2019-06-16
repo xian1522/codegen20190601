@@ -1,5 +1,7 @@
 package com.wj.codegen.api;
 
+import java.util.Properties;
+
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.javabean.FullyQualifiedJavaType;
@@ -37,6 +39,10 @@ public class IntrospectedColumn {
 	protected boolean isColumnNameDelimited;
 	
 	protected IntrospectedTable introspectedTable;
+	
+	protected String javaProperty;
+	
+	protected Properties properties;
 	
 	public boolean isBLOBColumn() {
 		String typeName = this.getJdbcTypeName();
@@ -178,7 +184,38 @@ public class IntrospectedColumn {
 	public void setIntrospectedTable(IntrospectedTable introspectedTable) {
 		this.introspectedTable = introspectedTable;
 	}
+
+	public String getJavaProperty() {
+		return getJavaProperty(null);
+	}
 	
+	public String getJavaProperty(String prefix) {
+		if(prefix == null) {
+			return javaProperty;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(prefix);
+		sb.append(javaProperty);
+		
+		return sb.toString();
+	}
+
+	public void setJavaProperty(String javaProperty) {
+		this.javaProperty = javaProperty;
+	}
+	
+	public boolean isStringColumn() {
+		return fullQualifiedJavaType.equals(FullyQualifiedJavaType.getStringInstance());
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties.putAll(properties);
+	}
 	
 	
 }

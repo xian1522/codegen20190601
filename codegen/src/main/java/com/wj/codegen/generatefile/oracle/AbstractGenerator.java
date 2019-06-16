@@ -1,9 +1,11 @@
 package com.wj.codegen.generatefile.oracle;
 
 import java.util.List;
+import java.util.Properties;
 
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.IntrospectedTable;
+import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 
 public abstract class AbstractGenerator {
@@ -11,6 +13,16 @@ public abstract class AbstractGenerator {
 	protected IntrospectedTable introspectedTable;
 	protected List<String> warnings;
 	protected ProgressCallBack progressCallback;
+	
+	public String getRootClass() {
+		String rootClass = introspectedTable
+				.getTableConfigurationProperty(PropertyRegistry.ANY_ROOT_CLASS);
+		if(rootClass == null) {
+			Properties properties = context.getJavaClientGeneratorConfiguration().getProperties();
+			rootClass = properties.getProperty(PropertyRegistry.ANY_ROOT_CLASS);
+		}
+		return rootClass;
+	}
 	
 	public Context getContext() {
 		return context;

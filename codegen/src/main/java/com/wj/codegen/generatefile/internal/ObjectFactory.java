@@ -72,7 +72,11 @@ public class ObjectFactory {
 	public static Class<?> internalClassForName(String type) throws ClassNotFoundException{
 		Class<?> clazz = null;
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		clazz = Class.forName(type, true, cl);
+		try {
+			clazz = Class.forName(type, true, cl);
+		}catch(Exception e) {
+			
+		}
 		
 		if(clazz == null) {
 			clazz = Class.forName(type, true, ObjectFactory.class.getClassLoader());
