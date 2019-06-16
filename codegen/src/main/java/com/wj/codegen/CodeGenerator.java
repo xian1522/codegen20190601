@@ -7,6 +7,7 @@ import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.GeneratedKey;
 import com.wj.codegen.config.JDBCConnectionConfiguration;
+import com.wj.codegen.config.JavaClientGeneratorConfiguration;
 import com.wj.codegen.config.JavaModelGeneratorConfiguration;
 import com.wj.codegen.config.ModelType;
 import com.wj.codegen.config.ProjectConstant;
@@ -28,6 +29,9 @@ public class CodeGenerator {
 	
 	 private static final String PROJECT_PATH = System.getProperty("user.dir");
 	 private static final String JAVA_PATH = "/src/main/java"; //java文件路径
+	 
+	 private static final String BASE_PACKAGE = "com.wj.codegen";
+	 private static final String MAPPER_PACKAGE = BASE_PACKAGE + ".dao";
 	
 	public static void main(String[] args) {
 		genCode("sys_user");
@@ -60,6 +64,10 @@ public class CodeGenerator {
 		javaModelGeneratorConfig.setTargetProject(PROJECT_PATH+JAVA_PATH);
 		javaModelGeneratorConfig.setTargetPackage(ProjectConstant.MODEL_PACKAGE);
 		
+		JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
+		javaClientGeneratorConfiguration.setTargetProject(PROJECT_PATH+JAVA_PATH);
+		javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
+		context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);
