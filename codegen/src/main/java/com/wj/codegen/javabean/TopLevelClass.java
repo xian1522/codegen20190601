@@ -11,6 +11,7 @@ public class TopLevelClass extends InnerCalss implements CompilationUnit {
 	private Set<FullyQualifiedJavaType> importedTypes;
 	
 	public TopLevelClass(FullyQualifiedJavaType type) {
+		super(type);
 		//这里为什么要用TreeSet?
 		importedTypes = new TreeSet<FullyQualifiedJavaType>();
 	}

@@ -20,6 +20,7 @@ import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
+import com.wj.codegen.javabean.FullyQualifiedJavaType;
 import com.wj.codegen.util.StringUtil;
 
 public class DatabaseIntrospector {
@@ -193,7 +194,15 @@ public class DatabaseIntrospector {
 	}
 
 	private void calculateExtraColumnInformation(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>>columns) {
-		
+		for(Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
+			for(IntrospectedColumn introspectedColumn : entry.getValue()) {
+				FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver.calculateJavaType(introspectedColumn);
+				if(fullyQualifiedJavaType != null) {
+					introspectedColumn.setFullQualifiedJavaType(fullyQualifiedJavaType);
+					introspectedColumn.setJdbcTypeName(javaTypeResolver.calculateJdbcTypeName(introspectedColumn));
+				}
+			}
+		}
 	}
 	
 	private void applyColumnOverrides(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>> columns) {

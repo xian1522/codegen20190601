@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.wj.codegen.config.Context;
+import com.wj.codegen.javabean.FullyQualifiedJavaType;
 
 public interface JavaTypeResolver {
 	
@@ -12,4 +13,8 @@ public interface JavaTypeResolver {
 	void addConfigurationProperties(Properties properties);
 	
 	void setContext(Context context);
+	
+	FullyQualifiedJavaType calculateJavaType(IntrospectedColumn introspectedColumn);
+
+	String calculateJdbcTypeName(IntrospectedColumn introspectedColumn);
 }

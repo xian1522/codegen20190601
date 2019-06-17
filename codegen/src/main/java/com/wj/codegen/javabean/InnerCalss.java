@@ -1,5 +1,6 @@
 package com.wj.codegen.javabean;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,12 @@ public class InnerCalss extends JavaElement {
 	private Set<FullyQualifiedJavaType> superInterfaceTypes;
 	
 	private boolean isAbstract;
+	
+	public InnerCalss(FullyQualifiedJavaType type) {
+		this.type = type;
+		fields = new ArrayList<Field>();
+		methods = new ArrayList<Method>();
+	}
 	
 	public String getFormattedContent(int indentLevel, CompilationUnit compilationUnit) {
 		StringBuilder sb = new StringBuilder();

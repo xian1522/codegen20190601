@@ -1,5 +1,6 @@
 package com.wj.codegen.javabean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -13,6 +14,16 @@ public class Method extends JavaElement {
 	private String name;
 	private List<Parameter> parameters;
 	private List<FullyQualifiedJavaType> exceptions;
+	
+	public Method() {
+		this("bar");
+	}
+	
+	public Method(String name) {
+		bodyLines = new ArrayList<String>();
+		parameters = new ArrayList<Parameter>();
+		this.name = name;
+	}
 	
 	
 	public String getFormattedContent(int indentLevel, boolean interfaceMethod, CompilationUnit compilationUnit) {
