@@ -63,6 +63,7 @@ public class CodeGenerator {
 		JavaModelGeneratorConfiguration javaModelGeneratorConfig = new JavaModelGeneratorConfiguration();
 		javaModelGeneratorConfig.setTargetProject(PROJECT_PATH+JAVA_PATH);
 		javaModelGeneratorConfig.setTargetPackage(ProjectConstant.MODEL_PACKAGE);
+		context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfig);
 		
 		JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
 		javaClientGeneratorConfiguration.setTargetProject(PROJECT_PATH+JAVA_PATH);

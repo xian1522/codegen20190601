@@ -44,6 +44,10 @@ public class IntrospectedColumn {
 	
 	protected Properties properties;
 	
+	public IntrospectedColumn() {
+		properties = new Properties();
+	}
+	
 	public boolean isBLOBColumn() {
 		String typeName = this.getJdbcTypeName();
 		return "BINARY".equals(typeName) || "BLOB".equals(typeName) || "CLOB".equals(typeName);

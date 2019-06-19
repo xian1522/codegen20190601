@@ -1,6 +1,7 @@
 package com.wj.codegen.generatefile.internal;
 
 import java.math.BigDecimal;
+import java.security.Timestamp;
 import java.sql.Date;
 import java.sql.Types;
 import java.util.HashMap;
@@ -39,6 +40,8 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
 				new JdbcTypeInfomation("VARCHAR",new FullyQualifiedJavaType(String.class.getName())));
 		typeMap.put(Types.TIME, 
 				new JdbcTypeInfomation("TIME",new FullyQualifiedJavaType(Date.class.getName())));
+		typeMap.put(Types.TIMESTAMP, 
+				new JdbcTypeInfomation("TIMESTAMPE",new FullyQualifiedJavaType(Timestamp.class.getName())));
 	}
 
 	public void setWarnings(List<String> warnings) {

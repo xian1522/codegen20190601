@@ -1,5 +1,6 @@
 package com.wj.codegen.config;
 
+import com.wj.codegen.util.JavaBeansUtil;
 import com.wj.codegen.util.StringUtil;
 
 public class FullyQualifiedTable {
@@ -92,7 +93,13 @@ public class FullyQualifiedTable {
 		return runtimeTableName;
 	}
 	public String getDomainObjectName() {
-		return domainObjectName;
+		if (StringUtil.stringHasValue(domainObjectName)) {
+            return domainObjectName;
+        } else if (StringUtil.stringHasValue(runtimeTableName)) {
+            return JavaBeansUtil.getCamelCaseString(runtimeTableName, true);
+        } else {
+            return JavaBeansUtil.getCamelCaseString(introspectedTableName, true);
+        }
 	}
 	public String getDomainObjectSubPackage() {
 		return domainObjectSubPackage;
