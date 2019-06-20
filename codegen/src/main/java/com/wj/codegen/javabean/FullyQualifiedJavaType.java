@@ -5,6 +5,8 @@ import java.util.List;
 
 public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType> {
 	
+	private static final String JAVA_LANG = "java.lang";
+	
 	private String baseShortName;
 	private String baseQualifiedName;
 	private String packageName;
@@ -15,6 +17,8 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 	private boolean wildcardType;
 	private boolean boundedWildcard;
 	private boolean extendsBoundedWildcard;
+	
+	private boolean primitive;
 	
 	private static FullyQualifiedJavaType booleanPrimitiveInstance = null;
 	private static FullyQualifiedJavaType stringInstance = null;
@@ -67,11 +71,42 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 		}else {
 			int index = fullTypeSpecification.indexOf('<');
 			if(index == -1) {
-				//simpleParse(fullTypeSpecification);
+				simpleParse(fullTypeSpecification);
 			}else {
 				//simpleParse(fullTypeSpecification.substring(0,index));
 			}
 		}
+	}
+	
+	public void simpleParse(String typeSpecification) {
+		baseQualifiedName = typeSpecification.trim();
+		if(baseQualifiedName.contains(".")) {
+			packageName = getPackage(baseQualifiedName);
+			baseShortName = baseQualifiedName.substring(packageName.length() + 1);
+			int index = baseShortName.lastIndexOf('.');
+			if(index != -1) {
+				baseShortName = baseShortName.substring(index + 1);
+			}
+			if(JAVA_LANG.equals(packageName)) {
+				explicitlyImported = false;
+			}else {
+				explicitlyImported = true;
+			}
+		}else {
+			baseShortName = baseQualifiedName;
+			explicitlyImported = false;
+			packageName = "";
+			
+			if("byte".equals(baseQualifiedName)) {
+				primitive = true;
+				
+			}
+		}
+	}
+	
+	private static String getPackage(String baseQualifiedName) {
+		int indext = baseQualifiedName.lastIndexOf('.');
+		return baseQualifiedName.substring(0, indext);
 	}
 	
 	public String getShortName() {
