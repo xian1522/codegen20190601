@@ -23,6 +23,7 @@ public class Method extends JavaElement {
 		bodyLines = new ArrayList<String>();
 		parameters = new ArrayList<Parameter>();
 		this.name = name;
+		exceptions = new ArrayList<FullyQualifiedJavaType>();
 	}
 	
 	

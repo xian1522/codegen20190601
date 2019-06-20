@@ -1,6 +1,7 @@
 package com.wj.codegen.javabean;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ public class InnerCalss extends JavaElement {
 		this.type = type;
 		fields = new ArrayList<Field>();
 		methods = new ArrayList<Method>();
+		superInterfaceTypes = new HashSet<FullyQualifiedJavaType>();
 	}
 	
 	public String getFormattedContent(int indentLevel, CompilationUnit compilationUnit) {
