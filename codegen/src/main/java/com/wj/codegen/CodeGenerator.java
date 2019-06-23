@@ -3,6 +3,7 @@ package com.wj.codegen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.StringUtils;
 import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.GeneratedKey;
@@ -95,7 +96,7 @@ public class CodeGenerator {
 			throw new RuntimeException("生成Model失败",e);
 		}
 		
-		System.out.println(modelName + ".java 生成成功");
+		System.out.println("model 生成成功");
 		
 	}
 }

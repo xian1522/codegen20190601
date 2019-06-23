@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.wj.codegen.util.JavaDomUtil;
 import com.wj.codegen.util.OutputUtilities;
 
 public class Method extends JavaElement {
@@ -39,7 +40,7 @@ public class Method extends JavaElement {
 			if(this.getReturnType() == null) {
 				sb.append("void");
 			}else {
-				sb.append(this.getReturnType());
+				sb.append(JavaDomUtil.calculateTypeName(compilationUnit, returnType));
 			}
 			sb.append(' ');
 		}

@@ -17,7 +17,7 @@ public class OutputUtilities {
 	
 	public static void javaIndent(StringBuilder sb,int indentLevel) {
 		for(int i = 0; i<indentLevel; i++) {
-			sb.append("		");
+			sb.append("    ");
 		}
 	}
 	

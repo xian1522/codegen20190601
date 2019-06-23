@@ -1,5 +1,7 @@
 package com.wj.codegen.javabean;
 
+import com.wj.codegen.util.JavaDomUtil;
+
 public class Parameter {
 	private String name;
 	private FullyQualifiedJavaType type;
@@ -18,7 +20,7 @@ public class Parameter {
 	public String getFormattedContent(CompilationUnit compilationUnit) {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(type);
+		sb.append(JavaDomUtil.calculateTypeName(compilationUnit, type));
 		sb.append(' ');
 		if(isVarargs){
 			sb.append("... ");

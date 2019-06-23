@@ -196,6 +196,10 @@ public class DatabaseIntrospector {
 	private void calculateExtraColumnInformation(TableConfiguration tc,Map<ActualTableName,List<IntrospectedColumn>>columns) {
 		for(Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns.entrySet()) {
 			for(IntrospectedColumn introspectedColumn : entry.getValue()) {
+				
+				String calculateColumnName = introspectedColumn.getActualColumnName();
+				introspectedColumn.setJavaProperty(calculateColumnName);
+				
 				FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver.calculateJavaType(introspectedColumn);
 				if(fullyQualifiedJavaType != null) {
 					introspectedColumn.setFullQualifiedJavaType(fullyQualifiedJavaType);

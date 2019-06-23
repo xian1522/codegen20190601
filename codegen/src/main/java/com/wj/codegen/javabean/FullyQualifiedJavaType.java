@@ -151,4 +151,24 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 		
 		return stringInstance;
 	}
+
+
+	public boolean isPrimitive() {
+		return primitive;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj){
+			return true;
+		}
+		
+		if(!(obj instanceof FullyQualifiedJavaType)) {
+			return false;
+		}
+		
+		FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
+		
+		return this.getFullyQualifiedName().equals(other.getFullyQualifiedName());
+	}
 }

@@ -53,7 +53,7 @@ public class SimpleModelGenerator extends AbstractJavaGenerator {
 			
 			Field field = JavaBeansUtil.getJavaBeanField(introspectedColumn,context,introspectedTable);
 			topLevelClass.addField(field);
-			topLevelClass.addImportedTypes(field.getType());
+			topLevelClass.addImportedType(field.getType());
 			
 			Method method = JavaBeansUtil.getJavaBeansGetter(introspectedColumn,context,
 					introspectedTable);

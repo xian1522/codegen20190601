@@ -1,5 +1,6 @@
 package com.wj.codegen.javabean;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -42,7 +43,7 @@ public class TopLevelClass extends InnerCalss implements CompilationUnit {
 	}
 
 	public Set<FullyQualifiedJavaType> getImportTypes() {
-		return null;
+		return Collections.unmodifiableSet(this.importedTypes);
 	}
 
 	public Set<String> getStaticImports() {
@@ -63,5 +64,14 @@ public class TopLevelClass extends InnerCalss implements CompilationUnit {
 	
 	public void addImportedTypes(FullyQualifiedJavaType type) {
 		importedTypes.add(type);
+	}
+	
+	public void addImportedType(FullyQualifiedJavaType importedType) {
+		if(importedType != null 
+				&& !importedType.isExplicitlyImported()
+				&& !importedType.getPackageName().equals(this.getType().getPackageName())
+				&& !importedType.getShortName().equals(this.getType().getShortName())) {
+			importedTypes.add(importedType);
+		}
 	}
 }

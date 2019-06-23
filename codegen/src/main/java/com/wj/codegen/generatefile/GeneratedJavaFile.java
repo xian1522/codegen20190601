@@ -46,7 +46,7 @@ public class GeneratedJavaFile extends GeneratedFile {
 
 	@Override
 	public String getFileName() {
-		return compilationUnit.getType().getShortNameWithoutTypeArguments();
+		return compilationUnit.getType().getShortNameWithoutTypeArguments() + ".java";
 	}
 	
 	
