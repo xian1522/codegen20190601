@@ -68,7 +68,7 @@ public class TopLevelClass extends InnerCalss implements CompilationUnit {
 	
 	public void addImportedType(FullyQualifiedJavaType importedType) {
 		if(importedType != null 
-				&& !importedType.isExplicitlyImported()
+				&& importedType.isExplicitlyImported()
 				&& !importedType.getPackageName().equals(this.getType().getPackageName())
 				&& !importedType.getShortName().equals(this.getType().getShortName())) {
 			importedTypes.add(importedType);

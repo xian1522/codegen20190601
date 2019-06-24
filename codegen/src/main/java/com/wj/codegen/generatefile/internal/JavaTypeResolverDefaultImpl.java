@@ -41,7 +41,9 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
 		typeMap.put(Types.TIME, 
 				new JdbcTypeInfomation("TIME",new FullyQualifiedJavaType(Date.class.getName())));
 		typeMap.put(Types.TIMESTAMP, 
-				new JdbcTypeInfomation("TIMESTAMPE",new FullyQualifiedJavaType(Timestamp.class.getName())));
+				new JdbcTypeInfomation("TIMESTAMPE",new FullyQualifiedJavaType(Date.class.getName())));
+		typeMap.put(Types.OTHER, 
+				new JdbcTypeInfomation("OBJECT",new FullyQualifiedJavaType(Timestamp.class.getName())));
 	}
 
 	public void setWarnings(List<String> warnings) {
