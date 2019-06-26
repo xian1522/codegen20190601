@@ -1,7 +1,7 @@
 package com.wj.codegen.generatefile.internal;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.HashMap;

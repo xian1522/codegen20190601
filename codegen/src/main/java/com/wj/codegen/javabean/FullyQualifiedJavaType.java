@@ -125,10 +125,6 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 		return packageName;
 	}
 	
-	public int compareTo(FullyQualifiedJavaType o) {
-		return 0;
-	}
-
 	public List<FullyQualifiedJavaType> getTypeArguments() {
 		return typeArguments;
 	}
@@ -170,5 +166,14 @@ public class FullyQualifiedJavaType implements Comparable<FullyQualifiedJavaType
 		FullyQualifiedJavaType other = (FullyQualifiedJavaType) obj;
 		
 		return this.getFullyQualifiedName().equals(other.getFullyQualifiedName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getFullyQualifiedName().hashCode();
+	}
+	
+	public int compareTo(FullyQualifiedJavaType other) {
+		return this.getFullyQualifiedName().compareTo(other.getFullyQualifiedName());
 	}
 }
