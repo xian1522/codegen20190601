@@ -21,6 +21,7 @@ import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
 import com.wj.codegen.javabean.FullyQualifiedJavaType;
+import com.wj.codegen.util.JavaBeansUtil;
 import com.wj.codegen.util.StringUtil;
 
 public class DatabaseIntrospector {
@@ -198,7 +199,7 @@ public class DatabaseIntrospector {
 			for(IntrospectedColumn introspectedColumn : entry.getValue()) {
 				
 				String calculateColumnName = introspectedColumn.getActualColumnName();
-				introspectedColumn.setJavaProperty(calculateColumnName);
+				introspectedColumn.setJavaProperty(JavaBeansUtil.getCamelCaseString(calculateColumnName,false));
 				
 				FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver.calculateJavaType(introspectedColumn);
 				if(fullyQualifiedJavaType != null) {

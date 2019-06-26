@@ -20,7 +20,7 @@ public class JavaDomUtil {
 	}
 	
 	private static boolean typeDoesNotRequiredImport(FullyQualifiedJavaType fullyQualifiedJavaType) {
-		return fullyQualifiedJavaType.isExplicitlyImported()
+		return !fullyQualifiedJavaType.isExplicitlyImported()
 				||fullyQualifiedJavaType.isPrimitive();
 	}
 	private static boolean typeIsInSamePackage(CompilationUnit compilationUnit,
