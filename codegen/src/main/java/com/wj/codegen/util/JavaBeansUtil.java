@@ -76,7 +76,7 @@ public class JavaBeansUtil {
 		method.addParameter(new Parameter(fqjt,property));
 		
 		StringBuilder sb = new StringBuilder();
-		if(introspectedColumn.isStringColumn() || isTrimStringsEnabled(introspectedColumn)) {
+		if(introspectedColumn.isStringColumn() && isTrimStringsEnabled(introspectedColumn)) {
 			sb.append("this.");
 			sb.append(property);
 			sb.append(" = ");
