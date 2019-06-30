@@ -109,7 +109,8 @@ public abstract class IntrospectedTable {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(config.getTargetPackage());
-		sb.append(fullyQualifiedTable.getSubPackageForClientOrSqlMap(isSubPackagesEnabled(config)));
+		//去除schema包名
+	//	sb.append(fullyQualifiedTable.getSubPackageForClientOrSqlMap(isSubPackagesEnabled(config)));
 		return sb.toString();
 	}
 	
