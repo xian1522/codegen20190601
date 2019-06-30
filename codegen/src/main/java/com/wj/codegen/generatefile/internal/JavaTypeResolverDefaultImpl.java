@@ -44,6 +44,8 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
 				new JdbcTypeInfomation("TIMESTAMPE",new FullyQualifiedJavaType(Date.class.getName())));
 		typeMap.put(Types.OTHER, 
 				new JdbcTypeInfomation("OBJECT",new FullyQualifiedJavaType(Timestamp.class.getName())));
+		typeMap.put(Types.NUMERIC,
+				new JdbcTypeInfomation("NUMERIC",new FullyQualifiedJavaType(BigDecimal.class.getName())));
 	}
 
 	public void setWarnings(List<String> warnings) {
@@ -95,7 +97,11 @@ public class JavaTypeResolverDefaultImpl implements JavaTypeResolver {
 			FullyQualifiedJavaType defaultType) {
 		FullyQualifiedJavaType answer;
 		
-		if(column.getScale() > 0 || column.getLength() > 18 || forceBigDecimals) {
+		if(column.getLength() == 19) {
+			answer = new FullyQualifiedJavaType(Long.class.getName());
+		}else if(column.getLength() == 0) {
+			answer = new FullyQualifiedJavaType(Integer.class.getName());
+		}else if(column.getScale() > 0 || column.getLength() > 18 || forceBigDecimals) {
 			answer = defaultType;
 		}else if(column.getLength() > 9) {
 			answer = new FullyQualifiedJavaType(Long.class.getName());
