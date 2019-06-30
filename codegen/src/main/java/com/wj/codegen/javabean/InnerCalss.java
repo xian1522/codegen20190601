@@ -39,11 +39,11 @@ public class InnerCalss extends JavaElement {
 		sb.append(this.getType().getShortName());
 		
 		if(superClass != null) {
-			sb.append("extends ");
+			sb.append(" extends ");
 			sb.append(superClass.getShortName());
 		}
 		if(superInterfaceTypes.size() > 0) {
-			sb.append("implements ");
+			sb.append(" implements ");
 			
 			boolean comma = false;
 			for(FullyQualifiedJavaType fqjt : superInterfaceTypes) {

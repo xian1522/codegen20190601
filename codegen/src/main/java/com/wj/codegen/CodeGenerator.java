@@ -12,6 +12,7 @@ import com.wj.codegen.config.JavaClientGeneratorConfiguration;
 import com.wj.codegen.config.JavaModelGeneratorConfiguration;
 import com.wj.codegen.config.ModelType;
 import com.wj.codegen.config.ProjectConstant;
+import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.callback.DefaultShellCallback;
 import com.wj.codegen.util.StringUtil;
@@ -78,6 +79,7 @@ public class CodeGenerator {
 			tableConfiguration.setDomainObjectName(modelName);
 		}
 		tableConfiguration.setGeneratedKey(new GeneratedKey("id","Mysql",true,null));
+		tableConfiguration.addProperty(PropertyRegistry.ANY_ROOT_CLASS, "com.wj.codegen.exception.ShellException");
 		context.addTableConfiguration(tableConfiguration);
 		
 		List<String> warnings;

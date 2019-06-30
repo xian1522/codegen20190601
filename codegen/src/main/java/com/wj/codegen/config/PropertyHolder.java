@@ -21,4 +21,8 @@ public abstract class PropertyHolder {
 		return properties.getProperty(name);
 	}
 	
+	public void addProperty(String name,String value) {
+		this.properties.put(name, value);
+	}
+	
 }

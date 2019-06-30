@@ -117,7 +117,7 @@ public class HibernateCodeGenerator {
 			File directory = shellCallback.getDirectory(gjf.getTargetProject(), gjf.getTargetPackage());
 			File targetFile = new File(directory,gjf.getFileName());
 			if(targetFile.exists()) {
-				//待施工..
+				source = gjf.getFormattedContent();
 			}else {
 				source = gjf.getFormattedContent();
 			}
