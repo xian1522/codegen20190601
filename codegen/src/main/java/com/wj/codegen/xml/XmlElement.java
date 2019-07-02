@@ -3,6 +3,8 @@ package com.wj.codegen.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wj.codegen.util.OutputUtilities;
+
 public class XmlElement extends Element {
 	
 	private List<Attribute> attributes;
@@ -41,18 +43,26 @@ public class XmlElement extends Element {
 	@Override
 	public String getFormattedContent(int indentLevel) {
 		StringBuilder sb = new StringBuilder();
+		OutputUtilities.xmlIndent(sb, indentLevel);
 		sb.append("<");
 		sb.append(name);
 		for(Attribute attribute : this.attributes) {
 			sb.append(" ");
 			sb.append(attribute.getFormattedContent(indentLevel));
 		}
-		for(Element element : this.elements) {
-			element.getFormattedContent(indentLevel);
+		if(elements.size() > 0) {
+			for(Element element : this.elements) {
+				OutputUtilities.newLine(sb);
+				element.getFormattedContent(indentLevel);
+			}
+			OutputUtilities.newLine(sb);
+			OutputUtilities.xmlIndent(sb, indentLevel);
+			sb.append("</");
+			sb.append(name);
+			sb.append(">");
+		}else {
+			sb.append("/>");
 		}
-		sb.append("</");
-		sb.append(name);
-		sb.append(">");
 		return sb.toString();
 	}
 
