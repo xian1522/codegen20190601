@@ -1,6 +1,13 @@
 package com.wj.codegen.generatefile;
 
+import com.wj.codegen.xml.Document;
+
 public class GeneratedXmlFile extends GeneratedFile {
+	
+	private String fileName;
+	private String targetPackage;
+	private Document document;
+	private XmlFormatter xmlFormatter;
 
 	public GeneratedXmlFile(String targetProject) {
 		super(targetProject);
@@ -8,12 +15,17 @@ public class GeneratedXmlFile extends GeneratedFile {
 
 	@Override
 	public String getFormattedContent() {
-		return null;
+		return xmlFormatter.getFormattedContent(document);
 	}
 
 	@Override
 	public String getFileName() {
-		return null;
+		return fileName;
 	}
 
+	public String getTargetPackage() {
+		return targetPackage;
+	}
+	
+	
 }
