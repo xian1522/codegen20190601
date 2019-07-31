@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.wj.codegen.generatefile.oracle.AbstractJavaClientGenerator;
 import com.wj.codegen.generatefile.oracle.AbstractXmlGenerator;
+import com.wj.codegen.generatefile.oracle.xmlmapper.SimpleXMLMapperGenerator;
 import com.wj.codegen.javabean.CompilationUnit;
 
 public class SimpleJavaClientGenerator extends AbstractJavaClientGenerator {
@@ -17,8 +18,7 @@ public class SimpleJavaClientGenerator extends AbstractJavaClientGenerator {
 
 	@Override
 	public AbstractXmlGenerator getMatchedXMLGenerator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleXMLMapperGenerator();
 	}
 
 	@Override
