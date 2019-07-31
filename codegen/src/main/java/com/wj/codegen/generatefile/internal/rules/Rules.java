@@ -7,4 +7,6 @@ public interface Rules {
 	boolean generateExampleClass();
 
 	boolean generatePrimaryKeyClass();
+	
+	boolean generatedJavaClient();
 }

@@ -7,7 +7,9 @@ import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
-import com.wj.codegen.generatefile.oracle.model.ExampleGenerator;
+import com.wj.codegen.generatefile.internal.ObjectFactory;
+import com.wj.codegen.generatefile.oracle.javamapper.JavaMapperGenerator;
+import com.wj.codegen.generatefile.oracle.javamapper.SimpleJavaClientGenerator;
 import com.wj.codegen.generatefile.oracle.model.SimpleModelGenerator;
 import com.wj.codegen.javabean.CompilationUnit;
 
@@ -57,6 +59,36 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 		/**构建javaModelGenerator并放入缓存中 */
 		calculateJavaModelGenerators(warnings,progressCallback);
 		
+	}
+	
+	protected AbstractJavaClientGenerator calculateClientGenerators(List<String> warnings,
+			ProgressCallBack progressCallback) {
+		if(!rules.generatedJavaClient()) {
+			return null;
+		}
+		AbstractJavaClientGenerator javaGenerator = createJavaClientGenerator();
+		if(javaGenerator == null) {
+			return null;
+		}
+		
+		return javaGenerator;
+	}
+	
+	protected AbstractJavaClientGenerator createJavaClientGenerator() {
+		if(context.getJavaClientGeneratorConfiguration() == null) {
+			return null;
+		}
+		
+		String type = context.getJavaClientGeneratorConfiguration().getConfigurationType();
+		AbstractJavaClientGenerator javaGenerator;
+		if("XMLMAPPER".equalsIgnoreCase(type)) {
+			javaGenerator = new SimpleJavaClientGenerator();
+		}else if("ANNOTATEDMAPPER".equalsIgnoreCase(type)) {
+			javaGenerator = null;
+		}else {
+			javaGenerator =(AbstractJavaClientGenerator) ObjectFactory.createInternalObject(type);
+		}
+		return javaGenerator;
 	}
 	
 	protected void calculateJavaModelGenerators(List<String>warnings,ProgressCallBack progressCallback) {

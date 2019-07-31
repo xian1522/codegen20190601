@@ -43,5 +43,9 @@ public abstract class BaseRules implements Rules {
 				|| tableConfiguration.isSelectByExampleStatementEnabled();
 		return rc;
 	}
+	
+	public boolean generatedJavaClient() {
+		return !isModelOnly;
+	}
 
 }

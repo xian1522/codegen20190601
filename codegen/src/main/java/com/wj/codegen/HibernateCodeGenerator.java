@@ -15,6 +15,7 @@ import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.exception.ShellException;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
+import com.wj.codegen.generatefile.GeneratedXmlFile;
 import com.wj.codegen.generatefile.callback.DefaultShellCallback;
 import com.wj.codegen.generatefile.callback.NullProgressCallBack;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
@@ -34,6 +35,7 @@ public class HibernateCodeGenerator {
 	private List<String> warnings;
 	/**待生成的java文件对象 */
 	private List<GeneratedJavaFile> generatedJavaFiles;
+	private List<GeneratedXmlFile> generatedXmlFiles;
 	/** 意义不明。。*/
 	private Set<String> projects;
 	
@@ -55,6 +57,7 @@ public class HibernateCodeGenerator {
 			this.warnings = warnings;
 		}
 		generatedJavaFiles = new ArrayList<GeneratedJavaFile>();
+		generatedXmlFiles = new ArrayList<GeneratedXmlFile>();
 		projects = new HashSet<String>();
 	}
 	
@@ -71,6 +74,7 @@ public class HibernateCodeGenerator {
 		}
 		
 		generatedJavaFiles.clear();
+		generatedXmlFiles.clear();
 		ObjectFactory.reset();
 		
 		List<Context> contextToRun;
@@ -92,7 +96,7 @@ public class HibernateCodeGenerator {
 		
 		/** generate generatedJavaFiles*/
 		for(Context context : contextToRun) {
-			context.generateFiles(callback, generatedJavaFiles, null, warnings);
+			context.generateFiles(callback, generatedJavaFiles, generatedXmlFiles, warnings);
 		}
 		
 		// write or overwrite files start
@@ -100,6 +104,10 @@ public class HibernateCodeGenerator {
 			for(GeneratedJavaFile gjf : generatedJavaFiles) {
 				projects.add(gjf.getTargetProject());
 				this.writeGeneratedJavaFile(gjf, callback);
+			}
+			for(GeneratedXmlFile gxf : generatedXmlFiles) {
+				projects.add(gxf.getTargetProject());
+				writeGeneratedXmlFile(gxf, callback);
 			}
 		}
 	}
@@ -126,6 +134,23 @@ public class HibernateCodeGenerator {
 			warnings.add(e.getMessage());
 		}
 	}
+	
+	public void writeGeneratedXmlFile(GeneratedXmlFile gxf, ProgressCallBack callback) {
+		File targetFile;
+		String source;
+		try {
+			File directory = shellCallback.getDirectory(gxf.getTargetProject(), gxf.getTargetPackage());
+			targetFile = new File(directory, gxf.getFileName());
+			
+			source = gxf.getFormattedContent();
+			this.writeFile(targetFile, source, "UTF-8");
+		}catch (ShellException e) {
+			warnings.add(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	* 代码内容写入指定文件
 	* @Description
