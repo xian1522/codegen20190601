@@ -6,9 +6,9 @@ import java.util.List;
 import com.wj.codegen.config.IntrospectedTable;
 import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
+import com.wj.codegen.generatefile.GeneratedXmlFile;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
-import com.wj.codegen.generatefile.oracle.javamapper.JavaMapperGenerator;
 import com.wj.codegen.generatefile.oracle.javamapper.SimpleJavaClientGenerator;
 import com.wj.codegen.generatefile.oracle.model.SimpleModelGenerator;
 import com.wj.codegen.javabean.CompilationUnit;
@@ -17,6 +17,7 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 	
 	protected List<AbstractJavaGenerator> javaModelGenerators;
 	protected List<AbstractJavaGenerator> clientGenerators;
+	protected AbstractXmlGenerator xmlMapperGenerator;
 	
 	public IntrospectedTableOracleImpl() {
 		super(TargetRuntime.ORACLE);
@@ -58,6 +59,10 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 	public void calculateGenerators(List<String> warnings, ProgressCallBack progressCallback) {
 		/**构建javaModelGenerator并放入缓存中 */
 		calculateJavaModelGenerators(warnings,progressCallback);
+		
+		AbstractJavaClientGenerator javaClientGenerator = calculateClientGenerators(warnings,progressCallback);
+		
+		calculateXmlMapperGenerator(javaClientGenerator,warnings,progressCallback);
 		
 	}
 	
@@ -109,5 +114,20 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 		abstractGenerator.setProgressCallback(progressCallback);
 		abstractGenerator.setWarnings(warnings);
 	}
+	
+	protected void calculateXmlMapperGenerator(AbstractJavaClientGenerator javaClientGenerator, List<String> warngings,ProgressCallBack callback) {
+		if(javaClientGenerator == null) {
+			
+		}else {
+			xmlMapperGenerator = javaClientGenerator.getMatchedXMLGenerator();
+		}
+	}
+
+	@Override
+	public List<GeneratedXmlFile> getGeneratedXmlFiles() {
+		return null;
+	}
+	
+	
 
 }

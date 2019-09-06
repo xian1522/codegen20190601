@@ -26,7 +26,8 @@ public class SimpleXMLMapperGenerator extends AbstractXmlGenerator {
 		XmlElement answer = new XmlElement("hibernate-mapping");
 		
 		AbstractXmlElementGenerator elementGenerator = new ClassElementGenerator();
-		elementGenerator.addElements(answer);
+		
+		initAndExecuteGenerator(elementGenerator,answer);
 		
 		return answer;
 	}
@@ -39,6 +40,22 @@ public class SimpleXMLMapperGenerator extends AbstractXmlGenerator {
 		
 		document.setRootElement(getSqlMapElement());
 		return document;
+	}
+	
+	/**
+	*  添加class及其子元素 
+	* @Description
+	* @user w.j
+	* @date 2019年9月6日 上午7:48:30
+	* @throws
+	 */
+	protected void initAndExecuteGenerator(AbstractXmlElementGenerator generator, XmlElement parentElement) {
+		generator.setContext(context);
+		generator.setIntrospectedTable(introspectedTable);
+		generator.setWarnings(warnings);
+		generator.setProgressCallback(progressCallback);
+		
+		generator.addElements(parentElement);
 	}
 
 }

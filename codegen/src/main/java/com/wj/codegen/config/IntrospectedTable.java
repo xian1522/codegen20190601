@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
+import com.wj.codegen.generatefile.GeneratedXmlFile;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.internal.rules.HierarchicalModelRules;
 import com.wj.codegen.generatefile.internal.rules.Rules;
@@ -205,6 +206,8 @@ public abstract class IntrospectedTable {
 		}
 		return StringUtil.isTrue(properties.getProperty(PropertyRegistry.ANY_IMMUTABLE));
 	}
+	
+	public abstract List<GeneratedXmlFile> getGeneratedXmlFiles();
 	
 	public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
 	
