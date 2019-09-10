@@ -31,7 +31,7 @@ public abstract class IntrospectedTable {
 		ATTR_DAO_INTERFACE_TYPE, 
 		ATTR_BASE_RECORD_TYPE,
 		
-		ATTR_EXAMPLE_TYPE,
+		ATTR_EXAMPLE_TYPE, ATTR_ORACLE_XML_MAPPER_FILE_NAME, ATTR_ORACLE_XML_MAPPER_PACKAGE,
 	}
 	protected Context context;
 	protected TableConfiguration tableConfiguration;
@@ -314,4 +314,8 @@ public abstract class IntrospectedTable {
 	public boolean hasPrimaryKeyColumns() {
 		return primaryKeyColumns.size() > 0;
 	}
+	
+	public abstract String getXmlMapperFileName();
+	
+	public abstract String getXmlMapperPackage();
 }

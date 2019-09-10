@@ -11,6 +11,7 @@ import com.wj.codegen.api.JavaTypeResolver;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.GeneratedXmlFile;
 import com.wj.codegen.generatefile.JavaFormatter;
+import com.wj.codegen.generatefile.XmlFormatter;
 import com.wj.codegen.generatefile.callback.ProgressCallBack;
 import com.wj.codegen.generatefile.internal.JDBCConnectionFactory;
 import com.wj.codegen.generatefile.internal.ObjectFactory;
@@ -48,6 +49,9 @@ public class Context extends PropertyHolder {
 	private String targetRuntime;
 	
 	private JavaFormatter javaFormatter;
+	private XmlFormatter xmlFormatter;
+	
+	private SqlMapGeneratorConfiguration sqlMapGeneratroConfiguration;
 	
 	public Context(ModelType defaultModelType) {
 		if(defaultModelType == null) {
@@ -198,6 +202,13 @@ public class Context extends PropertyHolder {
 		}
 		return javaFormatter;
 	}
+	
+	public XmlFormatter getXmlFormatter() {
+		if(xmlFormatter == null) {
+			xmlFormatter = ObjectFactory.createXmlFormatter(this);
+		}
+		return xmlFormatter;
+	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -214,5 +225,15 @@ public class Context extends PropertyHolder {
 	public void addTableConfiguration(TableConfiguration tc) {
 		tableConfigurations.add(tc);
 	}
+
+	public SqlMapGeneratorConfiguration getSqlMapGeneratroConfiguration() {
+		return sqlMapGeneratroConfiguration;
+	}
+
+	public void setSqlMapGeneratroConfiguration(SqlMapGeneratorConfiguration sqlMapGeneratroConfiguration) {
+		this.sqlMapGeneratroConfiguration = sqlMapGeneratroConfiguration;
+	}
+	
+	
 	
 }

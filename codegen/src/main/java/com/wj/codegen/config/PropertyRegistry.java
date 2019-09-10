@@ -20,4 +20,6 @@ public class PropertyRegistry {
 	public static final String CONTEXT_JAVA_FORMATTER = "javaFormatter";
 	
 	public static final String MODEL_GENERATOR_TRIM_STRINGS = "trimStrings";
+	
+	public static final String CONTEXT_XML_FORMATTER = "xmlForamtter";
 }

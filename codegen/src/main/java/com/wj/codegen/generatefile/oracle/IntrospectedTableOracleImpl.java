@@ -12,6 +12,7 @@ import com.wj.codegen.generatefile.internal.ObjectFactory;
 import com.wj.codegen.generatefile.oracle.javamapper.SimpleJavaClientGenerator;
 import com.wj.codegen.generatefile.oracle.model.SimpleModelGenerator;
 import com.wj.codegen.javabean.CompilationUnit;
+import com.wj.codegen.xml.Document;
 
 public class IntrospectedTableOracleImpl extends IntrospectedTable {
 	
@@ -125,9 +126,24 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 
 	@Override
 	public List<GeneratedXmlFile> getGeneratedXmlFiles() {
-		return null;
+		List<GeneratedXmlFile> answer = new ArrayList<GeneratedXmlFile>();
+		if(xmlMapperGenerator != null) {
+			Document document = xmlMapperGenerator.getDocument();
+			GeneratedXmlFile gxf = new GeneratedXmlFile(document,this.getXmlMapperFileName(),
+					this.getXmlMapperPackage(),context.getSqlMapGeneratroConfiguration().getTargetPackage(),
+					true,context.getXmlFormatter());
+			
+			answer.add(gxf);
+		}
+		return answer;
 	}
 	
+	public String getXmlMapperFileName() {
+		return internalAttributes.get(InternalAttribute.ATTR_ORACLE_XML_MAPPER_FILE_NAME);
+	}
 	
+	public String getXmlMapperPackage() {
+		return internalAttributes.get(InternalAttribute.ATTR_ORACLE_XML_MAPPER_PACKAGE);
+	}
 
 }

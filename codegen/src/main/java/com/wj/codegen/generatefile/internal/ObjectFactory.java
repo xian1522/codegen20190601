@@ -15,6 +15,8 @@ import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.DefaultJavaFormatter;
 import com.wj.codegen.generatefile.JavaFormatter;
+import com.wj.codegen.generatefile.XmlDefaultFormatter;
+import com.wj.codegen.generatefile.XmlFormatter;
 import com.wj.codegen.generatefile.oracle.IntrospectedTableOracleImpl;
 import com.wj.codegen.util.StringUtil;
 
@@ -161,6 +163,18 @@ public class ObjectFactory {
 		}
 		JavaFormatter answer = (JavaFormatter)createInternalObject(type);
 		answer.setContext(context);
+		return answer;
+	}
+	
+	public static XmlFormatter createXmlFormatter(Context context) {
+		String type = context.getProperty(PropertyRegistry.CONTEXT_XML_FORMATTER);
+		if(!StringUtil.stringHasValue(type)) {
+			type = XmlDefaultFormatter.class.getName();
+		}
+		XmlFormatter answer = (XmlFormatter) createInternalObject(type);
+		
+		answer.setContext(context);
+		
 		return answer;
 	}
 }
