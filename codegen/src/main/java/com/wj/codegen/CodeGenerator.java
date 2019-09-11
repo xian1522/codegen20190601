@@ -70,6 +70,8 @@ public class CodeGenerator {
 		JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
 		javaClientGeneratorConfiguration.setTargetProject(PROJECT_PATH+JAVA_PATH);
 		javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
+		//javaClientGenerator配置
+		javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
 		context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);

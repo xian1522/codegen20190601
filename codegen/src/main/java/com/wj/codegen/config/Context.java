@@ -135,6 +135,7 @@ public class Context extends PropertyHolder {
 				/**生成javaModelGenerator并放入缓存中 */
 				introspectedTable.calculateGenerators(warnings, callback);
 				generatedJavaFiles.addAll(introspectedTable.getGeneratedJavaFiles());
+				generatedXmlFiles.addAll(introspectedTable.getGeneratedXmlFiles());
 			}
 		}
 		

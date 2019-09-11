@@ -116,12 +116,14 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 		abstractGenerator.setWarnings(warnings);
 	}
 	
-	protected void calculateXmlMapperGenerator(AbstractJavaClientGenerator javaClientGenerator, List<String> warngings,ProgressCallBack callback) {
+	protected void calculateXmlMapperGenerator(AbstractJavaClientGenerator javaClientGenerator, List<String> warnings,ProgressCallBack callback) {
 		if(javaClientGenerator == null) {
 			
 		}else {
 			xmlMapperGenerator = javaClientGenerator.getMatchedXMLGenerator();
 		}
+		
+		initializeAbstractGenerator(xmlMapperGenerator, warnings, callback);
 	}
 
 	@Override

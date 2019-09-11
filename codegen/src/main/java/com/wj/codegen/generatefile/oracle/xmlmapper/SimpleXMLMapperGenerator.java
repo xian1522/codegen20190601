@@ -1,6 +1,5 @@
 package com.wj.codegen.generatefile.oracle.xmlmapper;
 
-import com.wj.codegen.config.FullyQualifiedTable;
 import com.wj.codegen.generatefile.oracle.AbstractXmlGenerator;
 import com.wj.codegen.generatefile.oracle.XmlConstants;
 import com.wj.codegen.generatefile.oracle.xmlmapper.elements.AbstractXmlElementGenerator;

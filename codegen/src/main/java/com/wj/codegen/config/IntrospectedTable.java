@@ -51,10 +51,21 @@ public abstract class IntrospectedTable {
 	public void initialize() {
 		calculateJavaClientAttributes(); //组装DAO层包名并保存到缓存中
 		calculateModelAttributes();//组装model层包名并保存到缓存中
+		calculateXmlAttributes(); //初始化XML配置
 		
 		if(tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
 			rules = new HierarchicalModelRules(this);
 		}
+		
+	}
+	/**
+	* 初始化XML属性配置
+	* @Description
+	* @user w.j
+	* @date 2019年9月11日 上午8:09:32
+	* @throws
+	 */
+	protected void calculateXmlAttributes() {
 		
 	}
 	
