@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.mysql.jdbc.StringUtils;
 import com.wj.codegen.api.IntrospectedColumn;
 import com.wj.codegen.generatefile.GeneratedJavaFile;
 import com.wj.codegen.generatefile.GeneratedXmlFile;
@@ -66,7 +67,52 @@ public abstract class IntrospectedTable {
 	* @throws
 	 */
 	protected void calculateXmlAttributes() {
+		setOracleXmlPackage(calculateXmlPackage());
+		setOracleXmlFileName(calculateOracleXmlFileName());
+	}
+	
+	protected String calculateOracleXmlFileName() {
+		StringBuilder sb = new StringBuilder();
+		if(StringUtil.stringHasValue(tableConfiguration.getMapperName())) {
+			String mapperName = tableConfiguration.getMapperName();
+			int ind = mapperName.lastIndexOf('.');
+			if(ind == -1) {
+				sb.append(mapperName);
+			}else {
+				sb.append(mapperName.substring(ind + 1));
+			}
+			sb.append(".xml");
+		}else {
+			sb.append(fullyQualifiedTable.getDomainObjectName());
+			sb.append(".xml");
+		}
+		return sb.toString();
+	}
+	
+	public void setOracleXmlFileName(String oracleXmlFileName) {
+		internalAttributes.put(InternalAttribute.ATTR_ORACLE_XML_MAPPER_FILE_NAME, oracleXmlFileName);
+	}
+	
+	protected String calculateXmlPackage() {
+		StringBuilder sb = new StringBuilder();
+		SqlMapGeneratorConfiguration config = context.getSqlMapGeneratroConfiguration();
 		
+		if(config != null) {
+			sb.append(config.getTargetPackage());
+			sb.append(fullyQualifiedTable.getSubPackageForClientOrSqlMap(isSubPackagesEnabled(config)));
+			if(StringUtil.stringHasValue(tableConfiguration.getMapperName())) {
+				String mapperName = tableConfiguration.getMapperName();
+				int ind = mapperName.lastIndexOf(".");
+				if(ind != -1) {
+					sb.append('.').append(mapperName.substring(0, ind));
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
+	public void setOracleXmlPackage(String oracleXmlPackage) {
+		internalAttributes.put(InternalAttribute.ATTR_ORACLE_XML_MAPPER_PACKAGE, oracleXmlPackage);
 	}
 	
 	public abstract void calculateGenerators(List<String> warnigns,ProgressCallBack progressCallback); 

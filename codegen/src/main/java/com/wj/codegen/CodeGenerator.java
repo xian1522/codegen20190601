@@ -3,7 +3,6 @@ package com.wj.codegen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.StringUtils;
 import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
 import com.wj.codegen.config.GeneratedKey;
@@ -13,6 +12,7 @@ import com.wj.codegen.config.JavaModelGeneratorConfiguration;
 import com.wj.codegen.config.ModelType;
 import com.wj.codegen.config.ProjectConstant;
 import com.wj.codegen.config.PropertyRegistry;
+import com.wj.codegen.config.SqlMapGeneratorConfiguration;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.callback.DefaultShellCallback;
 import com.wj.codegen.util.StringUtil;
@@ -34,6 +34,7 @@ public class CodeGenerator {
 	 
 	 private static final String BASE_PACKAGE = "com.wj.codegen";
 	 private static final String MAPPER_PACKAGE = BASE_PACKAGE + ".dao";
+	private static final String RESOURCE_PATH = "/src/main/resources";
 	
 	public static void main(String[] args) {
 		genCode("repo_deal");
@@ -73,6 +74,11 @@ public class CodeGenerator {
 		//javaClientGenerator配置
 		javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
 		context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+		
+		SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
+		sqlMapGeneratorConfiguration.setTargetProject(PROJECT_PATH + RESOURCE_PATH);
+		sqlMapGeneratorConfiguration.setTargetPackage("mapper");
+		context.setSqlMapGeneratroConfiguration(sqlMapGeneratorConfiguration);
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);

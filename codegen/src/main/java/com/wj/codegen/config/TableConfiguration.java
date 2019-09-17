@@ -24,6 +24,8 @@ public class TableConfiguration extends PropertyHolder {
 	private boolean updateByPrimaryKeyStatementEnabled;
 	private boolean deleteByPrimaryKeyStatementEnabled;
 	
+	private String mapperName;
+	
 	public TableConfiguration(Context context) {
 		this.modelType = context.getDefaultModelType();
 		
@@ -128,6 +130,16 @@ public class TableConfiguration extends PropertyHolder {
 
 	public void setDeleteByPrimaryKeyStatementEnabled(boolean deleteByPrimaryKeyStatementEnabled) {
 		this.deleteByPrimaryKeyStatementEnabled = deleteByPrimaryKeyStatementEnabled;
+	}
+
+
+	public String getMapperName() {
+		return mapperName;
+	}
+
+
+	public void setMapperName(String mapperName) {
+		this.mapperName = mapperName;
 	}
 	
 	
