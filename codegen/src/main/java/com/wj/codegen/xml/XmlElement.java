@@ -51,9 +51,10 @@ public class XmlElement extends Element {
 			sb.append(attribute.getFormattedContent(indentLevel));
 		}
 		if(elements.size() > 0) {
+			sb.append(">");
 			for(Element element : this.elements) {
 				OutputUtilities.newLine(sb);
-				element.getFormattedContent(indentLevel);
+				sb.append(element.getFormattedContent(indentLevel + 1));
 			}
 			OutputUtilities.newLine(sb);
 			OutputUtilities.xmlIndent(sb, indentLevel);

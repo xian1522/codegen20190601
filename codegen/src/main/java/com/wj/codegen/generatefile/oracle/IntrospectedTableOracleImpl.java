@@ -132,7 +132,7 @@ public class IntrospectedTableOracleImpl extends IntrospectedTable {
 		if(xmlMapperGenerator != null) {
 			Document document = xmlMapperGenerator.getDocument();
 			GeneratedXmlFile gxf = new GeneratedXmlFile(document,this.getXmlMapperFileName(),
-					this.getXmlMapperPackage(),context.getSqlMapGeneratroConfiguration().getTargetPackage(),
+					this.getXmlMapperPackage(),context.getSqlMapGeneratroConfiguration().getTargetProject(),
 					true,context.getXmlFormatter());
 			
 			answer.add(gxf);
