@@ -42,4 +42,32 @@ public class StringUtil {
 		}
 		return s.indexOf('_') != -1 || s.indexOf('%') != -1;
 	}
+	
+	/**
+	* 首字母大小写
+	* @Description
+	* @user w.j
+	* @date 2019年10月10日 下午5:18:51
+	* @throws
+	*/
+	public static String changeFirstCharacterCase(String str,Boolean capitalize) {
+		
+		char baseChar = str.charAt(0);
+		
+		Character updatedChar;
+		if(capitalize) {
+			updatedChar = Character.toUpperCase(baseChar);		
+		}else {
+			updatedChar = Character.toLowerCase(baseChar);
+		}
+		
+		if(updatedChar == baseChar) {
+			return str;
+		}
+		
+		char[] chars = str.toCharArray();
+		chars[0] = updatedChar;
+		
+		return new String(chars, 0, chars.length);
+	}
 }

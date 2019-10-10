@@ -37,7 +37,7 @@ public class ClassElementGenerator extends AbstractXmlElementGenerator {
 				timestampElement.addAttribute(new Attribute("column",introspectedColumn.getActualColumnName()));
 				timestampElement.addAttribute(new Attribute("source","db"));
 				
-				answer.addElement(timestampElement);
+				answer.addElement(1,timestampElement);
 			}else {
 				XmlElement propertyColumn = new XmlElement("property");
 				

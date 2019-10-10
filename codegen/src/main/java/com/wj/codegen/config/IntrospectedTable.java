@@ -81,10 +81,10 @@ public abstract class IntrospectedTable {
 			}else {
 				sb.append(mapperName.substring(ind + 1));
 			}
-			sb.append(".xml");
+			sb.append(".hbm.xml");
 		}else {
 			sb.append(fullyQualifiedTable.getDomainObjectName());
-			sb.append(".xml");
+			sb.append(".hbm.xml");
 		}
 		return sb.toString();
 	}
@@ -99,7 +99,7 @@ public abstract class IntrospectedTable {
 		
 		if(config != null) {
 			sb.append(config.getTargetPackage());
-			sb.append(fullyQualifiedTable.getSubPackageForClientOrSqlMap(isSubPackagesEnabled(config)));
+		//	sb.append(fullyQualifiedTable.getSubPackageForClientOrSqlMap(isSubPackagesEnabled(config)));
 			if(StringUtil.stringHasValue(tableConfiguration.getMapperName())) {
 				String mapperName = tableConfiguration.getMapperName();
 				int ind = mapperName.lastIndexOf(".");

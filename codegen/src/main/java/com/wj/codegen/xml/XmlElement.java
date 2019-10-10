@@ -37,7 +37,10 @@ public class XmlElement extends Element {
 	public String getName() {
 		return name;
 	}
-
+	
+	public void addElement(int index, Element element) {
+		this.elements.add(index,element);
+	}
 
 
 	@Override

@@ -58,6 +58,13 @@ public class InnerCalss extends JavaElement {
 		sb.append(" {");
 		indentLevel++;
 		
+		//添加序列化信息
+		OutputUtilities.newLine(sb);
+		OutputUtilities.newLine(sb);
+		OutputUtilities.javaIndent(sb, indentLevel);
+		sb.append("private static final long serialVersionUID = 1L;");
+		OutputUtilities.newLine(sb);
+		
 		Iterator<Field> fldIter = fields.iterator();
 		while(fldIter.hasNext()) {
 			OutputUtilities.newLine(sb);
