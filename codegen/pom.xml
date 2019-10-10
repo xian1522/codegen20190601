@@ -32,6 +32,11 @@
         <artifactId>ojdbc6</artifactId>
         <version>11.2.0.3</version>
     </dependency>
-    
+    <!--代码生成器依赖-->
+    <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>2.3.23</version>
+    </dependency>
   </dependencies>
 </project>
