@@ -18,36 +18,44 @@ import com.wj.codegen.config.PropertyRegistry;
 import com.wj.codegen.config.SqlMapGeneratorConfiguration;
 import com.wj.codegen.config.TableConfiguration;
 import com.wj.codegen.generatefile.callback.DefaultShellCallback;
+import com.wj.codegen.util.ContextLoader;
 import com.wj.codegen.util.StringUtil;
 
 import freemarker.template.TemplateExceptionHandler;
 
 public class CodeGenerator {
 	
-	private static final String JDBC_URL = "jdbc:oracle:thin:@192.168.70.121:1521:orcl";
-	private static final String JDBC_USERNAME = "gxcs0917";
-	private static final String JDBC_PASSWORD = "gxcs0917";
-	private static final String JDBC_DIVER_CLASS_NAME = "oracle.jdbc.driver.OracleDriver";
+	private static final String JDBC_URL = null;
+	private static final String JDBC_USERNAME = null;
+	private static final String JDBC_PASSWORD = null;
+	private static final String JDBC_DIVER_CLASS_NAME = null;
 	
-	//private static final String PROJECT_PATH = System.getProperty("user.dir");
-	private static final String PROJECT_PATH_BUSINESS = "E:/Users/Administrator/Workspaces/guangxi/Ticm_Business";
-	private static final String PROJECT_PATH = "E:/Users/Administrator/Workspaces/guangxi/Ticm";
+	private static final String PROJECT_PATH_BUSINESS = System.getProperty("user.dir")+"_Business";
+	private static final String PROJECT_PATH = System.getProperty("user.dir");
 	
-	private static final String JAVA_PATH = "/src/main/java"; //java文件路径
+	private static final String JAVA_PATH = null; //java文件路径
 	 
-	private static final String BASE_PACKAGE = "com.joyin.ticm";
-	private static final String DAO_PACKAGE = BASE_PACKAGE + ".sl.deal.dao";
-	private static final String SERVICE_PACKAGE = BASE_PACKAGE + ".sl.deal.service";
-	private static final String RESOURCE_PATH = "/src/main/config/hibernate";
-	private static final String TEMPLATE_RESOURCE_PATH = "/src/main/resources";
+	private static final String BASE_PACKAGE = null;
+	private static final String DAO_PACKAGE = null;
+	private static final String SERVICE_PACKAGE = null;
+	private static final String RESOURCE_PATH = null;
+	private static final String TEMPLATE_RESOURCE_PATH = null;
 	
 	private static final String TEMPLATE_FILE_PATH = System.getProperty("user.dir") + TEMPLATE_RESOURCE_PATH;
 	
-	private static final String MODEL_PACKAGE = BASE_PACKAGE + ".dep.allowance.test";
+	private static final String MODEL_PACKAGE = null;
 	
 	private static freemarker.template.Configuration config;
 	
+	private ContextLoader contextLoader = null;
 	
+	
+	public CodeGenerator() {
+		//加载properties配置文件
+		if(contextLoader == null) {
+			contextLoader = ContextLoader.getInstance();
+		}
+	}
 	
 	public static void main(String[] args) {
 		genCode("SL_DEAL");
@@ -60,10 +68,10 @@ public class CodeGenerator {
 	}
 	
 	public static void genCodeByCustomModelName(String tableName,String modelName) {
-		//genModelAndMapper(tableName,modelName);
-		//genController(modelName);
+		genModelAndMapper(tableName,modelName);
+		genController(modelName);
 		genService("SlDeal");
-		//genDao("SlDeal");
+		genDao("SlDeal");
 	}
 	
 	private static void genController(String modelName) {
