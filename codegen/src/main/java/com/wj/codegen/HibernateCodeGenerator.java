@@ -160,6 +160,7 @@ public class HibernateCodeGenerator {
 	*/
 	public void writeFile(File file,String content,String fileEncoding) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file,false);
+		System.out.println("代码生成路径:" + file.getAbsolutePath());
 		OutputStreamWriter osw;
 		if(fileEncoding == null) {
 			osw = new OutputStreamWriter(fos);

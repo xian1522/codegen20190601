@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.wj.codegen.config.Configuration;
 import com.wj.codegen.config.Context;
@@ -25,25 +26,26 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class CodeGenerator {
 	
-	private static final String JDBC_URL = null;
-	private static final String JDBC_USERNAME = null;
-	private static final String JDBC_PASSWORD = null;
-	private static final String JDBC_DIVER_CLASS_NAME = null;
+	private String JDBC_URL = null;
+	private String JDBC_USERNAME = null;
+	private String JDBC_PASSWORD = null;
+	private String JDBC_DIVER_CLASS_NAME = null;
 	
-	private static final String PROJECT_PATH_BUSINESS = System.getProperty("user.dir")+"_Business";
-	private static final String PROJECT_PATH = System.getProperty("user.dir");
+	private final String PROJECT_PATH_BUSINESS = System.getProperty("user.dir")+"_Business";
+	private final String PROJECT_PATH = System.getProperty("user.dir");
 	
-	private static final String JAVA_PATH = null; //java文件路径
+	private String JAVA_PATH = null; //java文件路径
 	 
-	private static final String BASE_PACKAGE = null;
-	private static final String DAO_PACKAGE = null;
-	private static final String SERVICE_PACKAGE = null;
-	private static final String RESOURCE_PATH = null;
-	private static final String TEMPLATE_RESOURCE_PATH = null;
+	private String BASE_PACKAGE = null;
+	private String DAO_PACKAGE = null;
+	private String SERVICE_PACKAGE = null;
+	private String RESOURCE_PATH = null;
+	private String TEMPLATE_RESOURCE_PATH = null;
 	
-	private static final String TEMPLATE_FILE_PATH = System.getProperty("user.dir") + TEMPLATE_RESOURCE_PATH;
+	private final String TEMPLATE_FILE_PATH = System.getProperty("user.dir") + TEMPLATE_RESOURCE_PATH;
 	
-	private static final String MODEL_PACKAGE = null;
+	private String MAPPER_PATH = null;
+	private String MODEL_PACKAGE = null;
 	
 	private static freemarker.template.Configuration config;
 	
@@ -55,26 +57,44 @@ public class CodeGenerator {
 		if(contextLoader == null) {
 			contextLoader = ContextLoader.getInstance();
 		}
+		Properties properties = contextLoader.getProperties();
+		JDBC_URL = properties.getProperty("jdbc.url");
+		JDBC_USERNAME = properties.getProperty("jdbc.username");
+		JDBC_PASSWORD = properties.getProperty("jdbc.password");
+		JDBC_DIVER_CLASS_NAME = properties.getProperty("jdbc.driverClassName");
+		
+		JAVA_PATH = properties.getProperty("java.path");
+		
+		BASE_PACKAGE = properties.getProperty("base.package");
+		DAO_PACKAGE = properties.getProperty("dao.package");
+		SERVICE_PACKAGE = properties.getProperty("service.package");
+		RESOURCE_PATH = properties.getProperty("resource.path");
+		TEMPLATE_RESOURCE_PATH = properties.getProperty("template.resource.path");
+		MODEL_PACKAGE = properties.getProperty("model.package");
+		MAPPER_PATH = properties.getProperty("mapper.path");
+		
 	}
 	
 	public static void main(String[] args) {
-		genCode("SL_DEAL");
+		CodeGenerator codeGenerator = new CodeGenerator();
+		codeGenerator.genCode("SL_DEAL");
 	}
 	
-	public static void genCode(String...tableNames) {
+	public void genCode(String...tableNames) {
 		for(String tableName : tableNames) {
 			genCodeByCustomModelName(tableName,null);
 		}
 	}
 	
-	public static void genCodeByCustomModelName(String tableName,String modelName) {
+	public void genCodeByCustomModelName(String tableName,String modelName) {
 		genModelAndMapper(tableName,modelName);
-		genController(modelName);
-		genService("SlDeal");
-		genDao("SlDeal");
+	//	genController(modelName);
+	//	genService("SlDeal");
+	//	genDao("SlDeal");
 	}
 	
-	private static void genController(String modelName) {
+	@SuppressWarnings("unused")
+	private void genController(String modelName) {
 		try {
 			if(config == null) {
 				config = getConfiguration();
@@ -96,7 +116,8 @@ public class CodeGenerator {
 		}
 	}
 
-	private static void genService(String modelName) {
+	@SuppressWarnings("unused")
+	private void genService(String modelName) {
 		try {
 			if(config == null) {
 				config = getConfiguration();
@@ -128,7 +149,8 @@ public class CodeGenerator {
 		}
 	}
 	
-	private static void genDao(String modelName) {
+	@SuppressWarnings("unused")
+	private void genDao(String modelName) {
 		try {
 			if(config == null) {
 				config = getConfiguration();
@@ -160,7 +182,7 @@ public class CodeGenerator {
 	}
 	
 	
-public static void genModelAndMapper(String tableName,String modelName) {
+	public void genModelAndMapper(String tableName,String modelName) {
 		Context context = new Context(ModelType.HIERARCHICAL);
 		context.setId("Potato");
 		/** 不指定 默认为IntrospectedTableOracleImpl*/
@@ -187,12 +209,12 @@ public static void genModelAndMapper(String tableName,String modelName) {
 		
 		SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
 		sqlMapGeneratorConfiguration.setTargetProject(PROJECT_PATH + RESOURCE_PATH);
-		sqlMapGeneratorConfiguration.setTargetPackage("oracle.dep.test");
+		sqlMapGeneratorConfiguration.setTargetPackage(MAPPER_PATH);
 		context.setSqlMapGeneratroConfiguration(sqlMapGeneratorConfiguration);
 		
 		TableConfiguration tableConfiguration = new TableConfiguration(context);
 		tableConfiguration.setTableName(tableName);
-		tableConfiguration.setSchema("GXCS0917");
+		tableConfiguration.setSchema(JDBC_USERNAME);
 		if(StringUtil.stringHasValue(modelName)) {
 			tableConfiguration.setDomainObjectName(modelName);
 		}
@@ -219,7 +241,7 @@ public static void genModelAndMapper(String tableName,String modelName) {
 		System.out.println("model 生成成功");
 	}
 	
-	public static freemarker.template.Configuration getConfiguration() {
+	public freemarker.template.Configuration getConfiguration() {
 		
 		freemarker.template.Configuration configuration = 
 				new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_23);
@@ -233,7 +255,7 @@ public static void genModelAndMapper(String tableName,String modelName) {
 		return configuration;
 	}
 	
-	private static String packageConvertPath(String packageName) {
+	private String packageConvertPath(String packageName) {
 		return String.format("/%s/", packageName.contains(".") ? packageName.replaceAll("\\.", "/") : packageName);
 	}
 }
